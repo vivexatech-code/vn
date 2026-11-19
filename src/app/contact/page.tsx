@@ -105,10 +105,10 @@ function ContactForm() {
           {/* Form Type Tabs */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {[
-              { id: 'general', label: 'General' },
-              { id: 'admission', label: 'Admission 2025' },
-              { id: 'affiliation', label: 'Center Affiliation' },
-              { id: 'volunteer', label: 'Volunteer / NGO' }
+              { id: 'general', label: 'General Inquiry' },
+              { id: 'donation', label: 'Donation & 80G' },
+              { id: 'volunteer', label: 'Volunteer With Us' },
+              { id: 'initiatives', label: 'Welfare Programs' }
             ].map((t) => (
               <button
                 type="button"

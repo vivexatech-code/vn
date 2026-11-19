@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import {
   Bell, Save, CheckCircle2, Clock, Upload,
-  Eye, GraduationCap, X, Send
+  Eye, Heart, X, Send
 } from 'lucide-react';
 import { PopupSettings } from '@/lib/data';
 
@@ -259,8 +259,8 @@ export default function PopupSettingsManager({ initialSettings }: PopupSettingsM
 
                 <div className="relative z-10 space-y-0.5">
                   <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#D52D2D] text-white uppercase">
-                    <GraduationCap className="w-3 h-3" />
-                    Admission Helpline
+                    <Heart className="w-3 h-3 fill-white" />
+                    Community Welfare Helpline
                   </span>
                   <h4 className="text-sm font-bold text-white leading-tight">{settings.heading}</h4>
                   <p className="text-[10px] text-blue-100 line-clamp-1">{settings.description}</p>

@@ -109,19 +109,19 @@ export default async function NewsDetailPage({
 
             {/* Sidebar (4 cols) */}
             <div className="lg:col-span-4 space-y-8">
-              {/* Notice Box */}
-              <div className="bg-[#F5F7FC] p-6 rounded-3xl border border-slate-100 space-y-4">
-                <h3 className="font-serif font-bold text-lg text-[#102C63]">
-                  Admission Notification
+              {/* Welfare Action Box */}
+              <div className="bg-[#F7F8FC] p-6 rounded-3xl border border-slate-100 space-y-4">
+                <h3 className="font-bold text-lg text-[#102C63]">
+                  Support Our Welfare Mission
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Admissions for Paramedical & Computer certifications for Session 2025–26 are currently accepting applications across authorized centers.
+                  Every contribution directly supports our free children&apos;s education, daily meals, and stationery distribution drives across vulnerable communities.
                 </p>
                 <Link
-                  href="/online-admission"
-                  className="w-full flex items-center justify-center gap-2 bg-[#D52D2D] hover:bg-[#B52222] text-white py-2.5 rounded-xl text-xs font-semibold shadow transition"
+                  href="/donate"
+                  className="w-full flex items-center justify-center gap-2 bg-[#D52D2D] hover:bg-[#b82424] text-white py-2.5 rounded-xl text-xs font-bold shadow transition"
                 >
-                  <span>Apply Online 2025–26</span>
+                  <span>Donate to Support</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
               </div>

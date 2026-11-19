@@ -16,18 +16,18 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://vnvidhyapeeth.ac.in'),
-  title: 'VN Vidhyapeeth | Premier Educational & Skill Development Institution',
-  description: 'VN Vidhyapeeth is an educational initiative operated by a registered trust under the Indian Trust Act 1882. Providing ISO 9001:2015 certified paramedical, computer, and vocational training across India.',
+  title: 'VN Vidhyapeeth | Educational & Social Welfare Organization',
+  description: 'VN Vidhyapeeth is a registered educational and social welfare trust dedicated to education for everyone, food support, child welfare, and community development.',
   keywords: [
     'VN Vidhyapeeth',
-    'Paramedical Courses',
-    'DMLT Diploma',
-    'DPT Physiotherapy',
-    'DOTT Operation Theatre',
-    'Computer Diploma ADCA',
-    'Vocational Education NGO',
-    'Educational Trust India',
-    'Ellenabad Sirsa Haryana'
+    'Educational NGO India',
+    'Social Welfare Trust',
+    'Education for Every Child',
+    'Food Distribution Drives',
+    'Free Stationery for Children',
+    'Child Welfare & Development',
+    'Donate for Education',
+    'Volunteer With Us'
   ],
   authors: [{ name: 'VN Vidhyapeeth' }],
   icons: {
@@ -35,16 +35,16 @@ export const metadata: Metadata = {
     apple: '/images/logo.webp'
   },
   openGraph: {
-    title: 'VN Vidhyapeeth - Empowering Lives Through Education',
-    description: 'Autonomous skill-based paramedical and vocational education under registered trust framework.',
+    title: 'VN Vidhyapeeth - Education for Everyone, Employment for All',
+    description: 'Working towards a better society through education, food support, child welfare and community development.',
     url: 'https://vnvidhyapeeth.ac.in',
     siteName: 'VN Vidhyapeeth',
     images: [
       {
-        url: '/images/newslider1.jpg',
+        url: '/images/ngo/hero-children-study.jpg',
         width: 1200,
         height: 630,
-        alt: 'VN Vidhyapeeth Campus and Students'
+        alt: 'VN Vidhyapeeth Social Welfare and Education'
       }
     ],
     locale: 'en_IN',

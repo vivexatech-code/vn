@@ -18,11 +18,11 @@ export default function AdminHeroSlidesPage() {
   const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [badge, setBadge] = useState('');
-  const [ctaPrimaryText, setCtaPrimaryText] = useState('Explore Programs');
-  const [ctaPrimaryLink, setCtaPrimaryLink] = useState('/courses');
-  const [ctaSecondaryText, setCtaSecondaryText] = useState('Support Mission');
+  const [ctaPrimaryText, setCtaPrimaryText] = useState('Explore Our Initiatives');
+  const [ctaPrimaryLink, setCtaPrimaryLink] = useState('/initiatives');
+  const [ctaSecondaryText, setCtaSecondaryText] = useState('Donate Now');
   const [ctaSecondaryLink, setCtaSecondaryLink] = useState('/donate');
-  const [imageUrl, setImageUrl] = useState('/images/newslider1.jpg');
+  const [imageUrl, setImageUrl] = useState('/images/ngo/hero-children-study.jpg');
   const [orderIndex, setOrderIndex] = useState(1);
   const [isActive, setIsActive] = useState(1);
 
@@ -47,12 +47,12 @@ export default function AdminHeroSlidesPage() {
     setEditingSlide(null);
     setTitle('');
     setSubtitle('');
-    setBadge('ISO 9001:2015 Certified • Indian Trust Act 1882');
-    setCtaPrimaryText('Explore Programs');
-    setCtaPrimaryLink('/courses');
-    setCtaSecondaryText('Support Our Mission');
+    setBadge('Educational & Social Welfare Trust');
+    setCtaPrimaryText('Explore Our Initiatives');
+    setCtaPrimaryLink('/initiatives');
+    setCtaSecondaryText('Donate Now');
     setCtaSecondaryLink('/donate');
-    setImageUrl('/images/newslider1.jpg');
+    setImageUrl('/images/ngo/hero-children-study.jpg');
     setOrderIndex(slides.length + 1);
     setIsActive(1);
     setModalOpen(true);

@@ -233,6 +233,20 @@ export interface Partner {
   created_at?: string;
 }
 
+export interface Volunteer {
+  id: number;
+  full_name: string;
+  mobile: string;
+  email: string;
+  city: string;
+  areas_of_interest: string;
+  availability: string;
+  message?: string;
+  status: 'pending' | 'contacted' | 'approved' | 'inactive';
+  admin_notes?: string;
+  created_at: string;
+}
+
 export interface PopupSettings {
   id: number;
   is_enabled: number;
@@ -350,6 +364,48 @@ export function getFocusAreas(onlyActive = true): FocusArea[] {
     ? 'SELECT * FROM focus_areas WHERE is_active = 1 ORDER BY order_index ASC'
     : 'SELECT * FROM focus_areas ORDER BY order_index ASC';
   return toPlain(db.prepare(sql).all() as unknown as FocusArea[]);
+}
+
+export function createFocusArea(data: Omit<FocusArea, 'id'>): number {
+  const db = getDb();
+  const res = (db.prepare(`
+    INSERT INTO focus_areas (title, category, description, icon_name, image_url, link_url, order_index, is_active)
+    VALUES (@title, @category, @description, @icon_name, @image_url, @link_url, @order_index, @is_active)
+  `) as any).run({
+    title: data.title,
+    category: data.category || 'Child Welfare',
+    description: data.description,
+    icon_name: data.icon_name || 'BookOpen',
+    image_url: data.image_url || '/images/ngo/initiative-education.jpg',
+    link_url: data.link_url || '/initiatives',
+    order_index: data.order_index || 0,
+    is_active: data.is_active ?? 1
+  });
+  return Number(res.lastInsertRowid);
+}
+
+export function updateFocusArea(id: number, data: Partial<FocusArea>): void {
+  const db = getDb();
+  const existing = db.prepare('SELECT * FROM focus_areas WHERE id = ?').get(id) as unknown as FocusArea;
+  if (!existing) return;
+  const merged = { ...existing, ...data };
+  (db.prepare(`
+    UPDATE focus_areas SET
+      title = @title,
+      category = @category,
+      description = @description,
+      icon_name = @icon_name,
+      image_url = @image_url,
+      link_url = @link_url,
+      order_index = @order_index,
+      is_active = @is_active
+    WHERE id = @id
+  `) as any).run(merged);
+}
+
+export function deleteFocusArea(id: number): void {
+  const db = getDb();
+  db.prepare('DELETE FROM focus_areas WHERE id = ?').run(id);
 }
 
 // Impact Stats
@@ -768,15 +824,19 @@ export function getDashboardStats() {
   const newEnquiries = (db.prepare("SELECT count(*) as count FROM enquiries WHERE status = 'new'").get() as { count: number }).count;
   const totalCourses = (db.prepare('SELECT count(*) as count FROM courses').get() as { count: number }).count;
   const totalCampaigns = (db.prepare('SELECT count(*) as count FROM campaigns').get() as { count: number }).count;
+  const totalInitiatives = (db.prepare('SELECT count(*) as count FROM focus_areas WHERE is_active = 1').get() as { count: number }).count;
   const totalBlogs = (db.prepare('SELECT count(*) as count FROM news_blogs').get() as { count: number }).count;
   const totalGallery = (db.prepare('SELECT count(*) as count FROM gallery_items').get() as { count: number }).count;
   const totalDonations = (db.prepare('SELECT count(*) as count, COALESCE(sum(amount), 0) as total FROM donations').get() as { count: number; total: number });
   const totalAdmissions = (db.prepare('SELECT count(*) as count FROM admissions').get() as { count: number }).count;
   const newAdmissions = (db.prepare("SELECT count(*) as count FROM admissions WHERE status = 'pending'").get() as { count: number }).count;
+  const totalVolunteers = (db.prepare('SELECT count(*) as count FROM volunteers').get() as { count: number }).count;
+  const newVolunteers = (db.prepare("SELECT count(*) as count FROM volunteers WHERE status = 'pending'").get() as { count: number }).count;
   const totalPartners = (db.prepare('SELECT count(*) as count FROM partners').get() as { count: number }).count;
 
   const recentEnquiries = db.prepare('SELECT * FROM enquiries ORDER BY id DESC LIMIT 5').all() as unknown as Enquiry[];
   const recentDonations = db.prepare('SELECT * FROM donations ORDER BY id DESC LIMIT 5').all() as unknown as DonationRecord[];
+  const recentVolunteers = db.prepare('SELECT * FROM volunteers ORDER BY id DESC LIMIT 5').all() as unknown as Volunteer[];
   const recentAdmissions = db.prepare('SELECT * FROM admissions ORDER BY id DESC LIMIT 5').all() as unknown as Admission[];
 
   return toPlain({
@@ -784,15 +844,19 @@ export function getDashboardStats() {
     newEnquiries,
     totalCourses,
     totalCampaigns,
+    totalInitiatives,
     totalBlogs,
     totalGallery,
     totalAdmissions,
     newAdmissions,
+    totalVolunteers,
+    newVolunteers,
     totalPartners,
     donationCount: totalDonations.count,
     donationTotal: totalDonations.total,
     recentEnquiries,
     recentDonations,
+    recentVolunteers,
     recentAdmissions
   });
 }
@@ -1008,3 +1072,70 @@ export function updatePopupSettings(data: Partial<PopupSettings>): void {
     WHERE id = 1
   `) as any).run(merged);
 }
+
+// ------------------- VOLUNTEERS -------------------
+export function getVolunteers(filters?: { status?: string; search?: string }): Volunteer[] {
+  const db = getDb();
+  let query = 'SELECT * FROM volunteers WHERE 1=1';
+  const params: (string | number)[] = [];
+
+  if (filters?.status && filters.status !== 'all') {
+    query += ' AND status = ?';
+    params.push(filters.status);
+  }
+  if (filters?.search) {
+    query += ' AND (full_name LIKE ? OR mobile LIKE ? OR email LIKE ? OR city LIKE ? OR areas_of_interest LIKE ?)';
+    params.push(`%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`, `%${filters.search}%`);
+  }
+
+  query += ' ORDER BY id DESC';
+  const rows = (db.prepare(query) as any).all(...params);
+  return toPlain(rows as unknown as Volunteer[]);
+}
+
+export function getVolunteerById(id: number): Volunteer | null {
+  const db = getDb();
+  const row = db.prepare('SELECT * FROM volunteers WHERE id = ?').get(id);
+  return toPlain((row as unknown as Volunteer) || null);
+}
+
+export function createVolunteer(data: {
+  full_name: string;
+  mobile: string;
+  email: string;
+  city: string;
+  areas_of_interest: string;
+  availability: string;
+  message?: string;
+}): number {
+  const db = getDb();
+  const res = (db.prepare(`
+    INSERT INTO volunteers (full_name, mobile, email, city, areas_of_interest, availability, message, status)
+    VALUES (@full_name, @mobile, @email, @city, @areas_of_interest, @availability, @message, 'pending')
+  `) as any).run({
+    full_name: data.full_name,
+    mobile: data.mobile,
+    email: data.email,
+    city: data.city,
+    areas_of_interest: data.areas_of_interest,
+    availability: data.availability,
+    message: data.message || null
+  });
+  return Number(res.lastInsertRowid);
+}
+
+export function updateVolunteerStatus(id: number, status: string, admin_notes?: string): void {
+  const db = getDb();
+  db.prepare(`
+    UPDATE volunteers SET
+      status = ?,
+      admin_notes = COALESCE(?, admin_notes)
+    WHERE id = ?
+  `).run(status, admin_notes ?? null, id);
+}
+
+export function deleteVolunteer(id: number): void {
+  const db = getDb();
+  db.prepare('DELETE FROM volunteers WHERE id = ?').run(id);
+}
+

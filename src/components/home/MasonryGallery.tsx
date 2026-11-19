@@ -45,15 +45,15 @@ export default function MasonryGallery({ items, showViewAll = true }: MasonryGal
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="space-y-3 max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#183F91] px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#183F91] px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
               <ImageIcon className="w-3.5 h-3.5" />
-              Life at VN Vidhyapeeth
+              Moments of Hope & Impact
             </div>
-            <h2 className="text-3xl sm:text-4xl font-serif font-black text-[#102C63]">
-              Photo & Practical Gallery
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#102C63]">
+              Field Welfare & Activity Gallery
             </h2>
-            <p className="text-slate-600 text-base sm:text-lg">
-              Visual glimpses into laboratory workshops, hospital training sessions, annual awards, and social outreach activities.
+            <p className="text-slate-600 text-sm sm:text-base">
+              Visual glimpses into grassroots educational sessions, food distribution drives, free stationery handovers, and community outreach programs nationwide.
             </p>
           </div>
 

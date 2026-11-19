@@ -9,7 +9,7 @@ interface FloatingWhatsAppProps {
 
 export default function FloatingWhatsApp({
   phoneNumber = '+917015358183',
-  defaultMessage = 'Hello VN Vidhyapeeth, I would like to inquire about course admissions and programs.'
+  defaultMessage = 'Hello VN Vidhyapeeth, I would like to support your educational and social welfare initiatives.'
 }: FloatingWhatsAppProps) {
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -24,9 +24,9 @@ export default function FloatingWhatsApp({
       <div
         className={`hidden md:block transition-all duration-300 transform ${
           showTooltip ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-2 pointer-events-none'
-        } bg-white text-slate-800 text-xs font-medium py-1.5 px-3 rounded-full shadow-lg border border-slate-100 whitespace-nowrap`}
+        } bg-white text-slate-800 text-xs font-semibold py-1.5 px-3 rounded-full shadow-lg border border-slate-100 whitespace-nowrap`}
       >
-        Chat with Admission Office
+        Chat with VN Vidhyapeeth NGO Team
       </div>
 
       {/* WhatsApp Button */}
@@ -36,7 +36,7 @@ export default function FloatingWhatsApp({
         rel="noopener noreferrer"
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
-        aria-label="Chat on WhatsApp with VN Vidhyapeeth Admissions"
+        aria-label="Chat on WhatsApp with VN Vidhyapeeth Welfare Team"
         className="group relative flex items-center justify-center w-14 h-14 bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-emerald-300"
       >
         {/* Subtle Ping/Ripple indicator */}

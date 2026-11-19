@@ -1,7 +1,6 @@
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { ShieldCheck, CheckCircle2, ArrowRight, Award, Users, BookOpen } from 'lucide-react';
+import { Heart, CheckCircle2, ArrowRight, ShieldCheck, BookOpen, Utensils, Sparkles, Users } from 'lucide-react';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function OrganizationIntro() {
@@ -9,88 +8,92 @@ export default function OrganizationIntro() {
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Visual Composition */}
+          {/* Left Column: Visual Composition with authentic welfare photo */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none">
               {/* Primary Image */}
-              <div className="relative h-[420px] sm:h-[480px] rounded-2xl overflow-hidden shadow-2xl border-4 border-white">
+              <div className="relative h-[420px] sm:h-[480px] rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
                 <ImageWithFallback
-                  src="/images/newslider2.jpg"
+                  src="/images/ngo/initiative-education.jpg"
                   fallbackSrc="/images/placeholder-general.svg"
-                  alt="VN Vidhyapeeth Students in Paramedical Training"
+                  alt="VN Vidhyapeeth Free Education & Child Welfare Initiatives"
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#102C63]/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#102C63]/70 via-transparent to-transparent" />
               </div>
 
-              {/* Floating Badge Card */}
-              <div className="absolute -bottom-6 -right-4 sm:-bottom-8 sm:-right-6 bg-[#102C63] text-white p-5 sm:p-6 rounded-2xl shadow-xl border-2 border-white max-w-[260px]">
+              {/* Floating Trust Card */}
+              <div className="absolute -bottom-6 -right-4 sm:-bottom-8 sm:-right-6 bg-[#102C63] text-white p-5 sm:p-6 rounded-2xl shadow-xl border-2 border-white max-w-[270px]">
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center flex-shrink-0">
-                    <Award className="w-5 h-5 text-white" />
+                  <div className="w-10 h-10 rounded-full bg-[#D52D2D] flex items-center justify-center flex-shrink-0">
+                    <Heart className="w-5 h-5 text-white fill-white" />
                   </div>
                   <div>
-                    <span className="text-2xl font-black font-serif text-white block leading-none">7+</span>
-                    <span className="text-xs text-blue-200">Years of Service</span>
+                    <span className="text-xl font-bold text-white block leading-none">15,000+</span>
+                    <span className="text-xs text-blue-200">Children Empowered</span>
                   </div>
                 </div>
                 <p className="text-xs text-slate-300 leading-snug">
-                  Operated by a Registered Trust under <strong>Indian Trust Act 1882</strong>
+                  Registered under <strong>Indian Trust Act 1882</strong> • NITI Aayog & MSME NGO Partner
                 </p>
               </div>
 
               {/* Decorative Accent */}
-              <div className="absolute -top-4 -left-4 w-24 h-24 bg-red-100 rounded-2xl -z-10" />
+              <div className="absolute -top-4 -left-4 w-24 h-24 bg-red-100 rounded-3xl -z-10" />
             </div>
           </div>
 
           {/* Right Column: Narrative Content */}
           <div className="lg:col-span-7 space-y-6">
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#183F91] px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
-              <span className="w-2 h-2 rounded-full bg-[#183F91]" />
-              Empowering Lives Through Education
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-[#183F91] px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-[#D52D2D]" />
+              Social Welfare & Educational NGO
             </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-black text-[#102C63] leading-tight">
-              A Premier Educational Initiative Dedicated to Skill & Social Empowerment
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#102C63] leading-tight">
+              Together, We Can Make a Difference.
             </h2>
 
             <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
-              <strong>VN Vidhyapeeth</strong> is an autonomous educational and skill-development institution operated under a registered trust (Indian Trust Act 1882). Our mission is to bridge India’s technical and healthcare skill gap by providing accessible, employment-oriented, and high-quality vocational education to every ambitious student.
+              <strong>VN Vidhyapeeth</strong> is an autonomous educational and social welfare organization operated under a registered trust (Indian Trust Act 1882). We believe that poverty should never be an obstacle to a child’s education or dignity.
             </p>
 
-            {/* Key Pillars */}
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
+              Our core mission centers on working towards a compassionate, equitable society by providing <strong>free education support</strong> to underprivileged children, carrying out <strong>hunger relief food distribution drives</strong>, distributing <strong>free school stationery kits</strong>, and extending holistic community social welfare.
+            </p>
+
+            {/* Core Pillars */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#F5F7FC] border border-slate-100">
-                <CheckCircle2 className="w-5 h-5 text-[#183F91] flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#F7F8FC] border border-slate-100">
+                <BookOpen className="w-5 h-5 text-[#183F91] flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-sm font-bold text-[#102C63]">Job & Practical Oriented</h4>
-                  <p className="text-xs text-slate-600 mt-0.5">Real clinical hospital rotations and technical laboratory experiments.</p>
+                  <h4 className="text-sm font-bold text-[#102C63]">Education for Everyone</h4>
+                  <p className="text-xs text-slate-600 mt-0.5">Sponsoring school admissions, textbooks, and free remedial evening tutoring.</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#F5F7FC] border border-slate-100">
-                <CheckCircle2 className="w-5 h-5 text-[#183F91] flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#F7F8FC] border border-slate-100">
+                <Utensils className="w-5 h-5 text-[#D52D2D] flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-sm font-bold text-[#102C63]">Affordable & Inclusive</h4>
-                  <p className="text-xs text-slate-600 mt-0.5">Subsidized fee structures and merit scholarships for deserving candidates.</p>
+                  <h4 className="text-sm font-bold text-[#102C63]">Hunger Relief Drives</h4>
+                  <p className="text-xs text-slate-600 mt-0.5">Wholesome hot meals and monthly dry ration kits for impoverished families.</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#F5F7FC] border border-slate-100">
-                <CheckCircle2 className="w-5 h-5 text-[#183F91] flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#F7F8FC] border border-slate-100">
+                <Sparkles className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-sm font-bold text-[#102C63]">Nationwide Study Centers</h4>
-                  <p className="text-xs text-slate-600 mt-0.5">100+ authorized affiliated centers across Indian states and districts.</p>
+                  <h4 className="text-sm font-bold text-[#102C63]">Free School Stationery</h4>
+                  <p className="text-xs text-slate-600 mt-0.5">Delivering notebooks, school bags, and stationery kits directly to students.</p>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-[#F5F7FC] border border-slate-100">
-                <CheckCircle2 className="w-5 h-5 text-[#183F91] flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-[#F7F8FC] border border-slate-100">
+                <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-sm font-bold text-[#102C63]">Verified Accreditations</h4>
-                  <p className="text-xs text-slate-600 mt-0.5">ISO 9001:2015 certified, NITI Aayog & MSME registered framework.</p>
+                  <h4 className="text-sm font-bold text-[#102C63]">100% Transparency</h4>
+                  <p className="text-xs text-slate-600 mt-0.5">Every rupee donated goes directly to verified grassroots welfare programs.</p>
                 </div>
               </div>
             </div>
@@ -99,17 +102,18 @@ export default function OrganizationIntro() {
             <div className="pt-4 flex flex-wrap items-center gap-4">
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 bg-[#183F91] hover:bg-[#102C63] text-white font-semibold text-sm sm:text-base px-6 py-3 rounded-xl shadow-md transition-all duration-200"
+                className="inline-flex items-center gap-2 bg-[#183F91] hover:bg-[#102C63] text-white px-6 py-3 rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-all"
               >
-                <span>Read Full Story</span>
+                <span>Read Full Mission & Vision</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
               <Link
-                href="/initiatives"
-                className="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-sm sm:text-base px-6 py-3 rounded-xl transition-all duration-200"
+                href="/donate"
+                className="inline-flex items-center gap-2 bg-[#D52D2D] hover:bg-[#b82424] text-white px-6 py-3 rounded-full text-sm font-bold shadow-md hover:shadow-lg transition-all"
               >
-                <span>Explore Initiatives</span>
+                <Heart className="w-4 h-4 fill-white" />
+                <span>Donate to Support</span>
               </Link>
             </div>
           </div>

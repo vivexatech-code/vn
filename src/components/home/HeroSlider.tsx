@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, GraduationCap, ArrowRight, ShieldCheck } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { HeroSlide } from '@/lib/data';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
@@ -49,7 +49,7 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
             <div className="absolute inset-0">
               <ImageWithFallback
                 src={slide.image_url}
-                fallbackSrc="/images/newslider1.jpg"
+                fallbackSrc="/images/ngo/hero-children-study.jpg"
                 alt={slide.title}
                 fill
                 priority={index === 0}
@@ -73,7 +73,10 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
 
                 {/* Main Headline */}
                 <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15] text-white">
-                  {slide.title}
+                  {slide.title}{' '}
+                  {slide.highlight_text && (
+                    <span className="text-amber-300 font-extrabold">{slide.highlight_text}</span>
+                  )}
                 </h1>
 
                 {/* Subtitle */}
@@ -88,18 +91,20 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
                       href={slide.cta_primary_link}
                       className="inline-flex items-center gap-2 bg-[#D52D2D] hover:bg-[#B52222] text-white font-semibold text-sm sm:text-base px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
                     >
-                      <span>{slide.cta_primary_text || 'Explore Programs'}</span>
+                      <span>{slide.cta_primary_text || 'Explore Our Initiatives'}</span>
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                   )}
 
-                  <Link
-                    href="/online-admission"
-                    className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white font-semibold text-sm sm:text-base px-6 py-3 rounded-full backdrop-blur-sm border border-white/30 transition-all duration-200"
-                  >
-                    <GraduationCap className="w-4 h-4 text-red-400" />
-                    <span>Apply for Admission 2025–26</span>
-                  </Link>
+                  {slide.cta_secondary_link && (
+                    <Link
+                      href={slide.cta_secondary_link}
+                      className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 text-white font-semibold text-sm sm:text-base px-6 py-3 rounded-full backdrop-blur-sm border border-white/30 transition-all duration-200"
+                    >
+                      <Heart className="w-4 h-4 text-red-400 fill-red-400" />
+                      <span>{slide.cta_secondary_text || 'Donate Now'}</span>
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>
@@ -126,18 +131,18 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
             <ChevronRight className="w-6 h-6" />
           </button>
 
-          {/* Indicator Dots */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2.5">
-            {slides.map((_, i) => (
+          {/* Dots Indicator */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
+            {slides.map((_, idx) => (
               <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                aria-label={`Go to slide ${i + 1}`}
+                key={idx}
+                onClick={() => setCurrent(idx)}
                 className={`transition-all duration-300 rounded-full ${
-                  i === current
+                  idx === current
                     ? 'w-8 h-2.5 bg-[#D52D2D]'
                     : 'w-2.5 h-2.5 bg-white/50 hover:bg-white/80'
                 }`}
+                aria-label={`Go to slide ${idx + 1}`}
               />
             ))}
           </div>

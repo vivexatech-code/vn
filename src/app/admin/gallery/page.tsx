@@ -171,11 +171,11 @@ export default function AdminGalleryPage() {
                     onChange={(e) => setCategory(e.target.value)}
                     className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white"
                   >
-                    <option value="Training">Training</option>
-                    <option value="Paramedical">Paramedical</option>
-                    <option value="Education">Education</option>
-                    <option value="Events">Events</option>
-                    <option value="Social Impact">Social Impact</option>
+                    <option value="Education Programs">Education Programs</option>
+                    <option value="Food Distribution">Food Distribution</option>
+                    <option value="Stationery Distribution">Stationery Distribution</option>
+                    <option value="Social Welfare">Social Welfare</option>
+                    <option value="Community Events">Community Events</option>
                   </select>
                 </div>
 

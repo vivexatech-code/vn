@@ -44,11 +44,11 @@ export default function AdminTestimonialsPage() {
   const openCreateModal = () => {
     setEditingStory(null);
     setStudentName('');
-    setCourseName('Diploma in Medical Laboratory Technology (DMLT)');
-    setAchievement('Successfully Employed at Regional Diagnostic Center');
+    setCourseName('Primary Education Scholar');
+    setAchievement('Free Schooling & Stationery Beneficiary');
     setQuote('');
     setStory('');
-    setPhotoUrl('/images/neeraj-success-section.jpg');
+    setPhotoUrl('/images/ngo/story-priya.jpg');
     setIsFeatured(1);
     setIsActive(1);
     setModalOpen(true);

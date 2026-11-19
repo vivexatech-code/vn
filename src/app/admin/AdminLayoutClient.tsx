@@ -8,7 +8,7 @@ import {
   LayoutDashboard, BookOpen, Layers, MessageSquare,
   Image as ImageIcon, Newspaper, Sliders, Settings, LogOut,
   Menu, X, ExternalLink, Users, FileText, GraduationCap,
-  Building, Bell
+  Building, Bell, Heart, Target, HeartHandshake, TrendingUp
 } from 'lucide-react';
 
 interface AdminLayoutClientProps {
@@ -36,17 +36,21 @@ export default function AdminLayoutClient({ children }: AdminLayoutClientProps) 
 
   const navLinks = [
     { label: 'Dashboard', href: '/admin', icon: <LayoutDashboard className="w-4 h-4" /> },
-    { label: 'Online Admissions', href: '/admin/admissions', icon: <GraduationCap className="w-4 h-4" /> },
-    { label: 'Enquiry Management', href: '/admin/enquiries', icon: <MessageSquare className="w-4 h-4" /> },
-    { label: 'Popup Settings', href: '/admin/popup-settings', icon: <Bell className="w-4 h-4" /> },
-    { label: 'Hero Slideshow', href: '/admin/hero-slides', icon: <Sliders className="w-4 h-4" /> },
-    { label: 'Course Management', href: '/admin/courses', icon: <BookOpen className="w-4 h-4" /> },
-    { label: 'Successful Students', href: '/admin/testimonials', icon: <Users className="w-4 h-4" /> },
-    { label: 'Our Partners', href: '/admin/partners', icon: <Building className="w-4 h-4" /> },
-    { label: 'News & Circulars', href: '/admin/news', icon: <Newspaper className="w-4 h-4" /> },
+    { label: 'Donation Records', href: '/admin/donations', icon: <Heart className="w-4 h-4 text-red-400" /> },
+    { label: 'Welfare Campaigns', href: '/admin/campaigns', icon: <Target className="w-4 h-4" /> },
+    { label: 'Volunteer Management', href: '/admin/volunteers', icon: <Users className="w-4 h-4" /> },
+    { label: 'Core Initiatives', href: '/admin/initiatives', icon: <HeartHandshake className="w-4 h-4" /> },
+    { label: 'Stories of Change', href: '/admin/testimonials', icon: <BookOpen className="w-4 h-4" /> },
+    { label: 'Impact Statistics', href: '/admin/stats', icon: <TrendingUp className="w-4 h-4" /> },
+    { label: 'News & Events', href: '/admin/news', icon: <Newspaper className="w-4 h-4" /> },
     { label: 'Gallery Media', href: '/admin/gallery', icon: <ImageIcon className="w-4 h-4" /> },
-    { label: 'Custom Pages', href: '/admin/pages', icon: <FileText className="w-4 h-4" /> },
-    { label: 'Website & WhatsApp Settings', href: '/admin/settings', icon: <Settings className="w-4 h-4" /> }
+    { label: 'Hero Slideshow', href: '/admin/hero-slides', icon: <Sliders className="w-4 h-4" /> },
+    { label: 'Popup Alert Settings', href: '/admin/popup-settings', icon: <Bell className="w-4 h-4" /> },
+    { label: 'Contact Enquiries', href: '/admin/enquiries', icon: <MessageSquare className="w-4 h-4" /> },
+    { label: 'Our Partners', href: '/admin/partners', icon: <Building className="w-4 h-4" /> },
+    { label: 'Online Admissions', href: '/admin/admissions', icon: <GraduationCap className="w-4 h-4" /> },
+    { label: 'Custom Pages & SEO', href: '/admin/pages', icon: <FileText className="w-4 h-4" /> },
+    { label: 'Website & Bank Settings', href: '/admin/settings', icon: <Settings className="w-4 h-4" /> }
   ];
 
   return (
