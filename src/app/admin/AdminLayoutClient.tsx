@@ -37,8 +37,10 @@ export default function AdminLayoutClient({ children }: AdminLayoutClientProps) 
   const navLinks = [
     { label: 'Dashboard', href: '/admin', icon: <LayoutDashboard className="w-4 h-4" /> },
     { label: 'Donation Records', href: '/admin/donations', icon: <Heart className="w-4 h-4 text-red-400" /> },
+    { label: 'Donation Settings', href: '/admin/donation-settings', icon: <Heart className="w-4 h-4 text-emerald-400" /> },
     { label: 'Welfare Campaigns', href: '/admin/campaigns', icon: <Target className="w-4 h-4" /> },
     { label: 'Volunteer Management', href: '/admin/volunteers', icon: <Users className="w-4 h-4" /> },
+    { label: 'Media Library', href: '/admin/media', icon: <ImageIcon className="w-4 h-4 text-amber-400" /> },
     { label: 'Core Initiatives', href: '/admin/initiatives', icon: <HeartHandshake className="w-4 h-4" /> },
     { label: 'Stories of Change', href: '/admin/testimonials', icon: <BookOpen className="w-4 h-4" /> },
     { label: 'Impact Statistics', href: '/admin/stats', icon: <TrendingUp className="w-4 h-4" /> },

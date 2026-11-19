@@ -4,7 +4,9 @@ import './globals.css';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp';
-import AutoEnquiryPopup from '@/components/ui/AutoEnquiryPopup';
+import SmartDonationPopup from '@/components/ui/SmartDonationPopup';
+import StickyDonateButton from '@/components/ui/StickyDonateButton';
+import QuickDonationModal from '@/components/donation/QuickDonationModal';
 import { getSettings, getPopupSettings } from '@/lib/data';
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -76,19 +78,25 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/images/logo.webp" />
       </head>
-      <body className="min-h-screen flex flex-col font-sans antialiased text-slate-800 bg-white">
+      <body className="min-h-screen flex flex-col font-sans antialiased text-slate-800 bg-white pb-14 lg:pb-0">
         <Navbar settings={settings} />
         <main className="flex-1">{children}</main>
         <Footer settings={settings} />
 
-        {/* Global Floating WhatsApp Contact */}
+        {/* Persistent Floating / Sticky Donate Button (Desktop right edge & Mobile bottom bar) */}
+        <StickyDonateButton />
+
+        {/* Global Floating WhatsApp Contact (Positioned safely above bottom donate bar on mobile) */}
         <FloatingWhatsApp
           phoneNumber={settings?.whatsapp_number || settings?.phone1}
           defaultMessage={settings?.whatsapp_message}
         />
 
-        {/* Automatic Admissions Enquiry Popup */}
-        <AutoEnquiryPopup settings={popupSettings} />
+        {/* Smart Timed & Recurring Donation Popup */}
+        <SmartDonationPopup initialSettings={popupSettings} />
+
+        {/* One-Page Universal Quick Donation Modal */}
+        <QuickDonationModal bankSettings={settings} />
       </body>
     </html>
   );

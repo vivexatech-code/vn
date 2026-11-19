@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Users, Heart, CheckCircle2, Send, Sparkles, MapPin, Phone, Mail } from 'lucide-react';
+import { Heart, CheckCircle2, ArrowRight } from 'lucide-react';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
 export default function VolunteerSection() {
@@ -10,8 +10,8 @@ export default function VolunteerSection() {
     mobile: '',
     email: '',
     city: '',
-    areas_of_interest: 'Education for Every Child',
-    availability: 'Weekends (Saturday & Sunday)',
+    areas_of_interest: 'Education for Poor Children',
+    availability: 'Weekends',
     message: ''
   });
 
@@ -44,45 +44,41 @@ export default function VolunteerSection() {
   };
 
   return (
-    <section className="py-20 bg-[#F7F8FC]" id="volunteer">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section className="py-20 sm:py-28 bg-[#F8F9FA] border-t border-slate-100" id="volunteer" aria-label="Volunteer With Us">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Visual & Call to Action */}
+          {/* Left Column: Authentic Call to Service */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="inline-flex items-center gap-2 bg-amber-100 text-amber-900 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-              <Users className="w-3.5 h-3.5 text-amber-700" />
-              <span>Join Our Community of Changemakers</span>
+            <div className="inline-flex items-center gap-2 text-[#D52D2D] text-xs font-semibold uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-[#D52D2D]" />
+              <span>Join Hands With Us</span>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl font-bold text-[#102C63] leading-tight">
-              Volunteer With Us &amp; Impact Lives Firsthand
+            <h2 className="text-2xl sm:text-4xl font-bold text-[#102C63] tracking-tight leading-snug">
+              Be the Reason Someone Smiles Today
             </h2>
 
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-              Real social change happens on the ground. Whether you can give a few hours on a Sunday to teach, help pack stationery kits, or distribute hot meals to homeless families, your presence matters.
+            <p className="text-base text-slate-600 leading-relaxed font-normal">
+              Whether you can give a few hours on a weekend to teach children, pack school stationery kits, or help distribute food rations, your presence makes a real difference on the ground.
             </p>
 
-            <div className="space-y-3 pt-2">
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span>Teach underprivileged children in evening tutoring centers</span>
+            <div className="space-y-3 pt-1">
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-4 h-4 text-[#183F91] flex-shrink-0 mt-1" />
+                <span className="text-sm text-slate-700">Teach or mentor children in community learning sessions</span>
               </div>
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span>Distribute wholesome meals &amp; grocery ration kits</span>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-4 h-4 text-[#D52D2D] flex-shrink-0 mt-1" />
+                <span className="text-sm text-slate-700">Participate in food distribution and dry grocery packing drives</span>
               </div>
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span>Assemble &amp; hand over free school stationery packs</span>
-              </div>
-              <div className="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                <span>Receive verified NGO volunteer participation certificate</span>
+              <div className="flex items-start gap-3">
+                <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0 mt-1" />
+                <span className="text-sm text-slate-700">Hand over stationery kits and books directly to students</span>
               </div>
             </div>
 
-            {/* Volunteer Team Image Preview */}
-            <div className="relative h-48 rounded-3xl overflow-hidden shadow-md border-2 border-white">
+            {/* Respectful Volunteer Team Image */}
+            <div className="relative aspect-[16/9] rounded-xl overflow-hidden border border-slate-200 shadow-xs">
               <ImageWithFallback
                 src="/images/ngo/volunteer-team.jpg"
                 fallbackSrc="/images/placeholder-general.svg"
@@ -90,182 +86,163 @@ export default function VolunteerSection() {
                 fill
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#102C63]/80 via-transparent to-transparent flex items-end p-4">
-                <span className="text-white text-xs font-bold">
-                  Over 450+ Active Dedicated Volunteers Across Haryana &amp; Delhi NCR
-                </span>
-              </div>
             </div>
           </div>
 
-          {/* Right Column: Registration Form Card */}
-          <div className="lg:col-span-7">
-            <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-xl border border-slate-100">
-              <div className="mb-6">
-                <h3 className="text-xl sm:text-2xl font-bold text-[#102C63]">
-                  Register as a Volunteer
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                  Fill in your details and our volunteer coordinator will connect with you via WhatsApp or Call.
-                </p>
-              </div>
+          {/* Right Column: Clean Registration Form */}
+          <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-xs">
+            <div className="mb-6">
+              <h3 className="text-lg sm:text-xl font-bold text-[#102C63]">
+                Register as a Volunteer
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                Share your details and our team will get in touch with upcoming activities in your area.
+              </p>
+            </div>
 
-              {submitted ? (
-                <div className="p-8 text-center bg-emerald-50 border border-emerald-200 rounded-2xl space-y-3">
-                  <div className="w-14 h-14 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto shadow-md">
-                    <CheckCircle2 className="w-8 h-8" />
-                  </div>
-                  <h4 className="text-lg font-bold text-emerald-900">
-                    Thank You for Stepping Forward!
-                  </h4>
-                  <p className="text-xs sm:text-sm text-emerald-700 max-w-md mx-auto">
-                    Your volunteer registration has been received. Our team will reach out to you within 24–48 hours with upcoming distribution drives.
-                  </p>
-                  <button
-                    onClick={() => {
-                      setSubmitted(false);
-                      setFormData({
-                        full_name: '',
-                        mobile: '',
-                        email: '',
-                        city: '',
-                        areas_of_interest: 'Education for Every Child',
-                        availability: 'Weekends (Saturday & Sunday)',
-                        message: ''
-                      });
-                    }}
-                    className="text-xs font-bold text-[#183F91] hover:underline pt-2"
-                  >
-                    Register Another Person
-                  </button>
+            {submitted ? (
+              <div className="p-6 text-center bg-emerald-50 border border-emerald-200 rounded-xl space-y-3">
+                <div className="w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto">
+                  <CheckCircle2 className="w-6 h-6" />
                 </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  {error && (
-                    <div className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200">
-                      {error}
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Full Name <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.full_name}
-                        onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                        placeholder="e.g. Rahul Sharma"
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-2 focus:ring-[#183F91] focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Mobile Number (WhatsApp) <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={formData.mobile}
-                        onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
-                        placeholder="e.g. 9876543210"
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-2 focus:ring-[#183F91] focus:outline-none"
-                      />
-                    </div>
+                <h4 className="text-base font-bold text-emerald-900">
+                  Thank You for Stepping Forward!
+                </h4>
+                <p className="text-xs sm:text-sm text-emerald-700 max-w-md mx-auto">
+                  Your volunteer details have been received. We look forward to working alongside you in the field.
+                </p>
+                <button
+                  onClick={() => setSubmitted(false)}
+                  className="text-xs font-semibold text-[#183F91] hover:underline pt-2 block mx-auto"
+                >
+                  Register Another Volunteer
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                {error && (
+                  <div className="p-3 bg-red-50 text-red-700 text-xs rounded-lg border border-red-200">
+                    {error}
                   </div>
+                )}
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Email Address <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder="e.g. rahul@example.com"
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-2 focus:ring-[#183F91] focus:outline-none"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        City / District <span className="text-red-500">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.city}
-                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                        placeholder="e.g. Sirsa, Hisar, Delhi"
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-2 focus:ring-[#183F91] focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Area of Interest <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        value={formData.areas_of_interest}
-                        onChange={(e) => setFormData({ ...formData, areas_of_interest: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-2 focus:ring-[#183F91] focus:outline-none bg-white"
-                      >
-                        <option value="Education for Every Child">Education &amp; Teaching Children</option>
-                        <option value="Food Distribution & Meals">Food Distribution &amp; Meal Relief</option>
-                        <option value="Free Stationery Kits">Stationery Packaging &amp; Distribution</option>
-                        <option value="Social Welfare & Community">Social Welfare &amp; Community Drives</option>
-                        <option value="Event Coordination & Digital">Event Coordination &amp; Media</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">
-                        Your Availability <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        value={formData.availability}
-                        onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-2 focus:ring-[#183F91] focus:outline-none bg-white"
-                      >
-                        <option value="Weekends (Saturday & Sunday)">Weekends (Saturday &amp; Sunday)</option>
-                        <option value="Weekdays (Morning or Evening)">Weekdays (Morning / Evening)</option>
-                        <option value="Flexible / As Needed">Flexible / As Needed</option>
-                        <option value="Full Time Internship">Full Time Social Internship</option>
-                      </select>
-                    </div>
-                  </div>
-
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">
-                      Brief Message or Relevant Skills (Optional)
+                    <label className="block text-xs font-medium text-slate-700 mb-1">
+                      Full Name <span className="text-red-500">*</span>
                     </label>
-                    <textarea
-                      rows={3}
-                      value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      placeholder="Tell us a little about yourself or what motivates you to volunteer..."
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-2 focus:ring-[#183F91] focus:outline-none"
+                    <input
+                      type="text"
+                      required
+                      value={formData.full_name}
+                      onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                      placeholder="e.g. Meera Verma"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full inline-flex items-center justify-center gap-2 bg-[#183F91] hover:bg-[#102C63] text-white py-3.5 rounded-xl font-bold text-xs sm:text-sm transition shadow-md disabled:opacity-50"
-                  >
-                    <Send className="w-4 h-4" />
-                    <span>{loading ? 'Submitting Registration...' : 'Submit Volunteer Registration'}</span>
-                  </button>
-                </form>
-              )}
-            </div>
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">
+                      Mobile Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.mobile}
+                      onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                      placeholder="e.g. 9876543210"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">
+                      Email Address <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder="e.g. meera@example.org"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">
+                      City / Area <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.city}
+                      onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                      placeholder="e.g. Delhi NCR / Haryana"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">
+                      Area of Interest
+                    </label>
+                    <select
+                      value={formData.areas_of_interest}
+                      onChange={(e) => setFormData({ ...formData, areas_of_interest: e.target.value })}
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none bg-white"
+                    >
+                      <option value="Education for Poor Children">Education for Poor Children</option>
+                      <option value="Food Distribution & Hunger Relief">Food Distribution & Hunger Relief</option>
+                      <option value="Free Stationery Distribution">Free Stationery Distribution</option>
+                      <option value="Social Welfare">Social Welfare</option>
+                      <option value="Community Support">Community Support</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium text-slate-700 mb-1">
+                      Availability
+                    </label>
+                    <select
+                      value={formData.availability}
+                      onChange={(e) => setFormData({ ...formData, availability: e.target.value })}
+                      className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none bg-white"
+                    >
+                      <option value="Weekends">Weekends</option>
+                      <option value="Weekdays">Weekdays</option>
+                      <option value="Flexible / As Needed">Flexible / As Needed</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-slate-700 mb-1">
+                    Message or Experience (Optional)
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="Tell us about yourself or how you would like to help..."
+                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#183F91] hover:bg-[#102C63] text-white py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition disabled:opacity-50"
+                >
+                  <Heart className="w-3.5 h-3.5 fill-white" />
+                  <span>{loading ? 'Submitting Application...' : 'Submit Volunteer Application'}</span>
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>

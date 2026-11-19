@@ -188,14 +188,14 @@ export default function Navbar({ settings }: NavbarProps) {
                     className="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#183F91] transition"
                   >
                     <BookOpen className="w-3.5 h-3.5 text-[#183F91]" />
-                    <span>Education for Every Child</span>
+                    <span>Education for Poor Children</span>
                   </Link>
                   <Link
                     href="/initiatives#food"
                     className="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#183F91] transition"
                   >
                     <Utensils className="w-3.5 h-3.5 text-[#D52D2D]" />
-                    <span>Food Distribution & Meals</span>
+                    <span>Food Distribution & Hunger Relief</span>
                   </Link>
                   <Link
                     href="/initiatives#stationery"
@@ -209,7 +209,14 @@ export default function Navbar({ settings }: NavbarProps) {
                     className="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#183F91] transition"
                   >
                     <HeartHandshake className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>Social Welfare & Families</span>
+                    <span>Social Welfare</span>
+                  </Link>
+                  <Link
+                    href="/initiatives#community"
+                    className="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-blue-50 hover:text-[#183F91] transition"
+                  >
+                    <Users className="w-3.5 h-3.5 text-blue-600" />
+                    <span>Community Support</span>
                   </Link>
                 </div>
               )}

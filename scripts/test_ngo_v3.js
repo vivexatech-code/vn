@@ -137,7 +137,7 @@ async function runTests() {
       pan_number: 'ABCDE1234F',
       amount: 2500,
       payment_mode: 'Bank Transfer (NEFT/IMPS)',
-      transaction_id: 'TEST-TXN-998877',
+      transaction_id: `TEST-TXN-${Date.now()}-${Math.floor(Math.random() * 10000)}`,
       campaign_title: "Support a Child's Education",
       notes: 'Testing pending status for manual bank transfer verification.',
     });
@@ -272,6 +272,114 @@ async function runTests() {
     if (!Array.isArray(data) || data.length < 4) {
       throw new Error(`Expected at least 4 campaigns, got ${data?.length}`);
     }
+  });
+
+  // 8. Test Media Library API
+  await test('Media API: GET /api/media (Authorized)', async () => {
+    const res = await fetchUrl(BASE + '/api/media', {
+      headers: {
+        Cookie: adminCookie,
+      },
+    });
+    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    const data = JSON.parse(res.body);
+    if (!Array.isArray(data) || data.length === 0) {
+      throw new Error(`Expected array of media items, got ${data?.length}`);
+    }
+    const sample = data[0];
+    if (!sample.url || !sample.name || !sample.size) {
+      throw new Error('Media item missing expected properties (url, name, size)');
+    }
+  });
+
+  // 9. Test Minimal Fast Donation (Name + Mobile only, no Email required)
+  const uniqueTestTxn = `TEST_FAST_${Date.now()}`;
+  await test('Fast Donation POST: minimal details (Name + Mobile, Email omitted)', async () => {
+    const payload = JSON.stringify({
+      donor_name: 'Pooja Agarwal',
+      donor_phone: '9876501234',
+      amount: 501,
+      payment_mode: 'UPI (Mobile Intent)',
+      transaction_id: uniqueTestTxn,
+      campaign_title: 'Wherever Most Needed'
+    });
+
+    const res = await fetchUrl(BASE + '/api/donations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload),
+      },
+      body: payload,
+    });
+
+    if (res.status !== 201 && res.status !== 200) {
+      throw new Error(`Status ${res.status}: ${res.body}`);
+    }
+    const data = JSON.parse(res.body);
+    if (!data.receipt_no) throw new Error('No receipt_no returned');
+    if (data.amount !== 501) throw new Error(`Expected amount 501, got ${data.amount}`);
+  });
+
+  // 10. Test Duplicate Transaction ID Prevention
+  await test('Donation Duplicate Prevention: Reject identical transaction_id (409)', async () => {
+    const payload = JSON.stringify({
+      donor_name: 'Pooja Agarwal',
+      donor_phone: '9876501234',
+      amount: 501,
+      payment_mode: 'UPI',
+      transaction_id: uniqueTestTxn,
+      campaign_title: 'Wherever Most Needed'
+    });
+
+    const res = await fetchUrl(BASE + '/api/donations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload),
+      },
+      body: payload,
+    });
+
+    if (res.status !== 409) {
+      throw new Error(`Expected HTTP 409 conflict for duplicate transaction, got ${res.status}`);
+    }
+  });
+
+  // 11. Test Donation Settings API (GET & PATCH)
+  await test('Donation Settings API: GET /api/donation-settings (Authorized)', async () => {
+    const res = await fetchUrl(BASE + '/api/donation-settings', {
+      headers: {
+        Cookie: adminCookie,
+      },
+    });
+    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    const data = JSON.parse(res.body);
+    if (data.popup_delay_seconds === undefined || !data.bank_account || !data.upi_id) {
+      throw new Error('Donation settings missing expected properties');
+    }
+  });
+
+  await test('Donation Settings API: PATCH /api/donation-settings (Authorized)', async () => {
+    const payload = JSON.stringify({
+      popup_delay_seconds: 15,
+      popup_repeat_interval_seconds: 150,
+      popup_heading: 'Your Small Help Can Make a Big Difference.',
+      default_campaign: 'Wherever Most Needed'
+    });
+
+    const res = await fetchUrl(BASE + '/api/donation-settings', {
+      method: 'PATCH',
+      headers: {
+        Cookie: adminCookie,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload),
+      },
+      body: payload,
+    });
+    if (res.status !== 200) throw new Error(`Status ${res.status}: ${res.body}`);
+    const data = JSON.parse(res.body);
+    if (!data.success) throw new Error('PATCH was not successful');
   });
 
   console.log('\n=======================================');

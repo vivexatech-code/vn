@@ -110,7 +110,7 @@ export interface Campaign {
 export interface DonationRecord {
   id: number;
   donor_name: string;
-  donor_email: string;
+  donor_email?: string;
   donor_phone?: string;
   amount: number;
   pan_number?: string;
@@ -253,9 +253,12 @@ export interface PopupSettings {
   heading: string;
   description: string;
   delay_seconds: number;
-  frequency: 'once_session' | 'once_day' | 'always';
+  repeat_interval_seconds?: number;
+  frequency: 'once_session' | 'once_day' | 'always' | 'repeat_interval';
   image_url: string;
   button_text: string;
+  quick_amounts?: string;
+  popup_type?: string;
   updated_at?: string;
 }
 
@@ -274,42 +277,73 @@ export function getSettings(): SiteSettings {
 export function updateSettings(data: Partial<SiteSettings>): void {
   const db = getDb();
   const current = getSettings();
-  const updated = { ...current, ...data };
+  const merged = { ...current, ...data };
   db.prepare(`
     UPDATE settings SET
-      site_name = @site_name,
-      tagline = @tagline,
-      trust_name = @trust_name,
-      act_registration = @act_registration,
-      iso_certified = @iso_certified,
-      niti_msme = @niti_msme,
-      email = @email,
-      phone1 = @phone1,
-      phone2 = @phone2,
-      whatsapp = @whatsapp,
-      whatsapp_number = @whatsapp_number,
-      whatsapp_message = @whatsapp_message,
-      head_office_address = @head_office_address,
-      registered_office_address = @registered_office_address,
-      logo_url = @logo_url,
-      logo_full_url = @logo_full_url,
-      qr_code_url = @qr_code_url,
-      bank_name = @bank_name,
-      bank_account = @bank_account,
-      bank_ifsc = @bank_ifsc,
-      bank_holder = @bank_holder,
-      bank_branch = @bank_branch,
-      upi_id = @upi_id,
-      facebook_url = @facebook_url,
-      instagram_url = @instagram_url,
-      twitter_url = @twitter_url,
-      youtube_url = @youtube_url,
-      primary_color = @primary_color,
-      secondary_color = @secondary_color,
-      accent_color = @accent_color,
+      site_name = ?,
+      tagline = ?,
+      trust_name = ?,
+      act_registration = ?,
+      iso_certified = ?,
+      niti_msme = ?,
+      email = ?,
+      phone1 = ?,
+      phone2 = ?,
+      whatsapp = ?,
+      whatsapp_number = ?,
+      whatsapp_message = ?,
+      head_office_address = ?,
+      registered_office_address = ?,
+      logo_url = ?,
+      logo_full_url = ?,
+      qr_code_url = ?,
+      bank_name = ?,
+      bank_account = ?,
+      bank_ifsc = ?,
+      bank_holder = ?,
+      bank_branch = ?,
+      upi_id = ?,
+      facebook_url = ?,
+      instagram_url = ?,
+      twitter_url = ?,
+      youtube_url = ?,
+      primary_color = ?,
+      secondary_color = ?,
+      accent_color = ?,
       updated_at = CURRENT_TIMESTAMP
     WHERE id = 1
-  `).run(updated);
+  `).run(
+    merged.site_name,
+    merged.tagline,
+    merged.trust_name,
+    merged.act_registration,
+    merged.iso_certified,
+    merged.niti_msme,
+    merged.email,
+    merged.phone1,
+    merged.phone2 || null,
+    merged.whatsapp || null,
+    merged.whatsapp_number || null,
+    merged.whatsapp_message || null,
+    merged.head_office_address,
+    merged.registered_office_address,
+    merged.logo_url,
+    merged.logo_full_url || null,
+    merged.qr_code_url || null,
+    merged.bank_name || null,
+    merged.bank_account || null,
+    merged.bank_ifsc || null,
+    merged.bank_holder || null,
+    merged.bank_branch || null,
+    merged.upi_id || null,
+    merged.facebook_url || null,
+    merged.instagram_url || null,
+    merged.twitter_url || null,
+    merged.youtube_url || null,
+    merged.primary_color || null,
+    merged.secondary_color || null,
+    merged.accent_color || null
+  );
 }
 
 // Slides
@@ -567,14 +601,14 @@ export function createDonation(data: Omit<DonationRecord, 'id' | 'created_at' | 
   `);
   const result = insert.run({
     donor_name: data.donor_name,
-    donor_email: data.donor_email,
+    donor_email: data.donor_email || '',
     donor_phone: data.donor_phone || null,
     amount: data.amount,
     pan_number: data.pan_number || null,
     payment_mode: data.payment_mode || 'UPI / QR',
     transaction_id: data.transaction_id || null,
     campaign_id: data.campaign_id || null,
-    campaign_title: data.campaign_title || null,
+    campaign_title: data.campaign_title || 'Wherever Most Needed',
     notes: data.notes || null,
     status: data.status || 'verified'
   });
@@ -1059,18 +1093,32 @@ export function updatePopupSettings(data: Partial<PopupSettings>): void {
   const db = getDb();
   const current = getPopupSettings();
   const merged = { ...current, ...data };
-  (db.prepare(`
+  db.prepare(`
     UPDATE popup_settings SET
-      is_enabled = @is_enabled,
-      heading = @heading,
-      description = @description,
-      delay_seconds = @delay_seconds,
-      frequency = @frequency,
-      image_url = @image_url,
-      button_text = @button_text,
+      is_enabled = ?,
+      heading = ?,
+      description = ?,
+      delay_seconds = ?,
+      repeat_interval_seconds = ?,
+      frequency = ?,
+      image_url = ?,
+      button_text = ?,
+      quick_amounts = ?,
+      popup_type = ?,
       updated_at = CURRENT_TIMESTAMP
     WHERE id = 1
-  `) as any).run(merged);
+  `).run(
+    merged.is_enabled ?? 1,
+    merged.heading || 'Your Small Help Can Make a Big Difference.',
+    merged.description || 'Help us provide education, food and essential support to children and families in need.',
+    merged.delay_seconds ?? 15,
+    merged.repeat_interval_seconds ?? 150,
+    merged.frequency || 'repeat_interval',
+    merged.image_url || '/images/ngo/hero-children-study.jpg',
+    merged.button_text || 'Donate Now',
+    merged.quick_amounts || '101,251,501,1001,2501',
+    merged.popup_type || 'donation'
+  );
 }
 
 // ------------------- VOLUNTEERS -------------------

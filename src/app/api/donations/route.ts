@@ -34,30 +34,60 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    if (!body.donor_name || !body.donor_email || !body.amount) {
-      return NextResponse.json({ error: 'Name, email, and amount are required' }, { status: 400 });
+
+    // Validate minimal required fields: Name and Amount (> 0)
+    if (!body.donor_name || !body.donor_name.trim()) {
+      return NextResponse.json({ error: 'Donor full name is required' }, { status: 400 });
     }
 
-    // Default status: manual bank transfers are ALWAYS 'pending' until verified by admin.
-    // Instant UPI / Gateway payments can be 'verified' if confirmed.
-    let status = 'pending';
-    if (body.payment_mode === 'Online Gateway' || body.payment_mode === 'UPI' || body.payment_mode === 'UPI / QR') {
-      status = body.status || 'verified';
-    } else {
-      status = 'pending';
+    const amountNum = Number(body.amount);
+    if (isNaN(amountNum) || amountNum < 10) {
+      return NextResponse.json({ error: 'Please enter a valid donation amount of at least ₹10' }, { status: 400 });
     }
+
+    // Require at least a mobile number or email address
+    if (!body.donor_phone && !body.donor_email) {
+      return NextResponse.json({ error: 'Mobile number or email is required for donation receipt' }, { status: 400 });
+    }
+
+    const db = getDb();
+
+    // Prevent duplicate transaction_id
+    const txnId = body.transaction_id ? String(body.transaction_id).trim() : `TXN${Date.now()}${Math.floor(Math.random() * 1000)}`;
+
+    if (body.transaction_id) {
+      const existing = db.prepare('SELECT id FROM donations WHERE transaction_id = ?').get(txnId);
+      if (existing) {
+        return NextResponse.json({ error: 'This transaction reference has already been registered' }, { status: 409 });
+      }
+    }
+
+    // Payment verification & status handling:
+    // Manual bank transfers are ALWAYS 'pending' until verified by admin.
+    // Instant UPI and Gateway payments can be verified.
+    const mode = body.payment_mode || 'UPI / QR';
+    let status = 'pending';
+
+    if (mode === 'Bank Transfer' || mode.includes('Bank Transfer') || mode.includes('NEFT')) {
+      status = 'pending';
+    } else if (mode === 'Online Gateway' || mode === 'UPI' || mode === 'UPI / QR' || mode.includes('UPI')) {
+      // If signature verification is configured or simulation confirmed
+      status = body.status === 'failed' ? 'failed' : (body.status || 'verified');
+    }
+
+    const campaignTitle = body.campaign_title || 'Wherever Most Needed';
 
     const id = createDonation({
-      donor_name: body.donor_name,
-      donor_email: body.donor_email,
-      donor_phone: body.donor_phone,
-      amount: Number(body.amount),
-      pan_number: body.pan_number,
-      payment_mode: body.payment_mode || 'UPI / QR',
-      transaction_id: body.transaction_id || `TXN${Date.now()}`,
+      donor_name: body.donor_name.trim(),
+      donor_email: body.donor_email ? body.donor_email.trim() : (body.donor_phone ? `${body.donor_phone.replace(/\D/g, '')}@donor.vnvidhyapeeth.ac.in` : ''),
+      donor_phone: body.donor_phone ? body.donor_phone.trim() : '',
+      amount: amountNum,
+      pan_number: body.pan_number ? body.pan_number.trim().toUpperCase() : '',
+      payment_mode: mode,
+      transaction_id: txnId,
       campaign_id: body.campaign_id ? Number(body.campaign_id) : undefined,
-      campaign_title: body.campaign_title || 'General Social Welfare Fund',
-      notes: body.notes,
+      campaign_title: campaignTitle,
+      notes: body.notes || 'One-page quick donation',
       status
     });
 
@@ -67,8 +97,12 @@ export async function POST(req: Request) {
       success: true,
       donation_id: id,
       receipt_no,
+      transaction_id: txnId,
+      amount: amountNum,
+      donor_name: body.donor_name.trim(),
+      campaign_title: campaignTitle,
       status
-    });
+    }, { status: 201 });
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : 'Unknown error';
     return NextResponse.json({ error: errorMsg }, { status: 500 });

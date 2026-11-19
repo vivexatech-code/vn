@@ -85,13 +85,13 @@ export default function Footer({ settings }: FooterProps) {
               <li>
                 <Link href="/initiatives#education" className="hover:text-white transition flex items-center gap-2">
                   <BookOpen className="w-3.5 h-3.5 text-blue-400 flex-shrink-0" />
-                  <span>Education for Every Child</span>
+                  <span>Education for Poor Children</span>
                 </Link>
               </li>
               <li>
                 <Link href="/initiatives#food" className="hover:text-white transition flex items-center gap-2">
                   <Utensils className="w-3.5 h-3.5 text-red-400 flex-shrink-0" />
-                  <span>Food Distribution & Relief</span>
+                  <span>Food Distribution & Hunger Relief</span>
                 </Link>
               </li>
               <li>
@@ -103,13 +103,13 @@ export default function Footer({ settings }: FooterProps) {
               <li>
                 <Link href="/initiatives#welfare" className="hover:text-white transition flex items-center gap-2">
                   <HeartHandshake className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
-                  <span>Social Welfare for Families</span>
+                  <span>Social Welfare</span>
                 </Link>
               </li>
               <li>
-                <Link href="/initiatives#child-dev" className="hover:text-white transition flex items-center gap-2">
-                  <ShieldCheck className="w-3.5 h-3.5 text-purple-400 flex-shrink-0" />
-                  <span>Child Welfare & Development</span>
+                <Link href="/initiatives#community" className="hover:text-white transition flex items-center gap-2">
+                  <Users className="w-3.5 h-3.5 text-blue-300 flex-shrink-0" />
+                  <span>Community Support</span>
                 </Link>
               </li>
               <li className="pt-2">

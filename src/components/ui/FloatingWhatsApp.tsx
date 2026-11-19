@@ -19,7 +19,7 @@ export default function FloatingWhatsApp({
   const waUrl = `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
 
   return (
-    <aside aria-label="WhatsApp Support" className="fixed bottom-6 right-6 z-40 flex items-center gap-3">
+    <aside aria-label="WhatsApp Support" className="fixed bottom-16 sm:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-3">
       {/* Tooltip Badge */}
       <div
         className={`hidden md:block transition-all duration-300 transform ${

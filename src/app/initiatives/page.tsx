@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Our Initiatives | VN Vidhyapeeth Social Welfare Trust',
-  description: 'Explore the 5 core welfare initiatives of VN Vidhyapeeth: Education for every child, food relief drives, free stationery distribution, social welfare, and child development.'
+  description: 'Explore the 5 core welfare initiatives of VN Vidhyapeeth: Education for poor children, food distribution & hunger relief, free stationery distribution, social welfare, and community support.'
 };
 
 export default function InitiativesPage() {
@@ -39,7 +39,7 @@ export default function InitiativesPage() {
             {initiatives.map((init, idx) => (
               <div
                 key={init.id}
-                id={idx === 0 ? 'education' : idx === 1 ? 'food' : idx === 2 ? 'stationery' : idx === 3 ? 'welfare' : 'child-dev'}
+                id={idx === 0 ? 'education' : idx === 1 ? 'food' : idx === 2 ? 'stationery' : idx === 3 ? 'welfare' : 'community'}
                 className="bg-[#F7F8FC] rounded-3xl overflow-hidden border border-slate-100 flex flex-col justify-between hover:shadow-xl transition-all duration-300 group"
               >
                 <div>
