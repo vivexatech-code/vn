@@ -19,35 +19,35 @@ export default function VolunteerPage() {
       />
 
       {/* Volunteer Benefits Banner */}
-      <section className="py-12 bg-white border-b border-slate-100">
+      <section className="py-12 bg-[#FFF8F0] border-b border-[#EFE4DC]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-3xl bg-[#F7F8FC] border border-slate-100 space-y-2">
-              <div className="w-10 h-10 rounded-2xl bg-blue-100 text-[#183F91] flex items-center justify-center font-bold">
+            <div className="p-6 rounded-3xl bg-white border border-[#EFE4DC] shadow-xs space-y-2">
+              <div className="w-10 h-10 rounded-2xl bg-[#F4D6C6]/50 text-[#C87552] flex items-center justify-center font-bold">
                 <Users className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-base text-[#102C63]">Meaningful Community Impact</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <h3 className="font-bold text-base text-[#49352D]">Meaningful Community Impact</h3>
+              <p className="text-xs text-[#78665E] leading-relaxed">
                 Work directly with children, teach literacy and mathematics, and assist daily-wage families during food drives.
               </p>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[#F7F8FC] border border-slate-100 space-y-2">
-              <div className="w-10 h-10 rounded-2xl bg-red-100 text-[#D52D2D] flex items-center justify-center font-bold">
+            <div className="p-6 rounded-3xl bg-white border border-[#EFE4DC] shadow-xs space-y-2">
+              <div className="w-10 h-10 rounded-2xl bg-[#C87552]/10 text-[#C87552] flex items-center justify-center font-bold">
                 <Award className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-base text-[#102C63]">Official Certificate of Service</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <h3 className="font-bold text-base text-[#49352D]">Official Certificate of Service</h3>
+              <p className="text-xs text-[#78665E] leading-relaxed">
                 Receive an authorized certificate of volunteering and social internship from our registered NGO trust.
               </p>
             </div>
 
-            <div className="p-6 rounded-3xl bg-[#F7F8FC] border border-slate-100 space-y-2">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+            <div className="p-6 rounded-3xl bg-white border border-[#EFE4DC] shadow-xs space-y-2">
+              <div className="w-10 h-10 rounded-2xl bg-[#78866B]/15 text-[#78866B] flex items-center justify-center font-bold">
                 <ShieldCheck className="w-5 h-5" />
               </div>
-              <h3 className="font-bold text-base text-[#102C63]">Flexible Volunteer Slots</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
+              <h3 className="font-bold text-base text-[#49352D]">Flexible Volunteer Slots</h3>
+              <p className="text-xs text-[#78665E] leading-relaxed">
                 Choose weekend distribution drives, weekday teaching shifts, or remote educational mentorship based on your schedule.
               </p>
             </div>

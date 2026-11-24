@@ -21,34 +21,34 @@ export default function StickyDonateButton() {
         <button
           onClick={() => triggerQuickDonation(501)}
           aria-label="Quick Donate to VN Vidhyapeeth"
-          className="group flex items-center gap-2.5 bg-[#D52D2D] hover:bg-[#b82424] text-white py-3.5 px-4 rounded-l-2xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-x-1 border-l-2 border-y-2 border-white/20"
+          className="group flex items-center gap-2.5 bg-[#C87552] hover:bg-[#B56140] text-white py-3 px-3.5 rounded-l-xl shadow-md transition-colors border-l border-y border-white/20 active:scale-[0.99]"
         >
-          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
-            <Heart className="w-4 h-4 text-white fill-white animate-pulse" />
+          <div className="w-7 h-7 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
+            <Heart className="w-3.5 h-3.5 text-white fill-white" />
           </div>
-          <div className="text-left pr-1">
-            <span className="block text-xs font-extrabold uppercase tracking-wider leading-none">
+          <div className="text-left pr-0.5">
+            <span className="block text-xs font-semibold leading-none">
               Donate Now
             </span>
-            <span className="text-[10px] text-white/80 font-medium block mt-0.5">
-              Support a Child
+            <span className="text-[10px] text-white/90 font-normal block mt-1">
+              Support a child
             </span>
           </div>
         </button>
       </aside>
 
       {/* 2. Mobile: Persistent Bottom Action Bar (Non-overlapping with WhatsApp) */}
-      <aside className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200/90 py-2.5 px-4 shadow-xl">
+      <aside className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FFF8F0]/95 backdrop-blur-md border-t border-[#EFE4DC] py-2.5 px-4 shadow-xs">
         <div className="max-w-md mx-auto flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0">
-              <Heart className="w-4 h-4 text-[#D52D2D] fill-[#D52D2D]" />
+            <div className="w-7 h-7 rounded-lg bg-[#F4D6C6] flex items-center justify-center flex-shrink-0">
+              <Heart className="w-3.5 h-3.5 text-[#C87552] fill-[#C87552]" />
             </div>
             <div className="leading-tight">
-              <span className="text-xs font-bold text-[#102C63] block">
-                Make a Difference
+              <span className="text-xs font-medium text-[#49352D] block">
+                Make a difference
               </span>
-              <span className="text-[10px] text-slate-500 block">
+              <span className="text-[10px] text-[#78665E] block">
                 Food • Education • Kits
               </span>
             </div>
@@ -57,9 +57,9 @@ export default function StickyDonateButton() {
           <button
             onClick={() => triggerQuickDonation(251)}
             aria-label="Donate Now"
-            className="inline-flex items-center gap-1.5 bg-[#D52D2D] hover:bg-[#b82424] text-white px-5 py-2 rounded-xl text-xs font-bold shadow-md transition"
+            className="inline-flex items-center gap-1.5 bg-[#C87552] hover:bg-[#B56140] text-white px-4 py-2 rounded-xl text-xs font-medium shadow-xs transition-colors active:scale-[0.99]"
           >
-            <span>Donate Now</span>
+            <span>Donate now</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>

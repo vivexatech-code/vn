@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Heart, ArrowRight, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
 import { HeroSlide } from '@/lib/data';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
@@ -19,7 +19,7 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
 
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % slides.length);
-    }, 7000);
+    }, 6500);
 
     return () => clearInterval(timer);
   }, [slides.length, isPaused]);
@@ -31,10 +31,10 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
 
   return (
     <section
-      className="relative w-full min-h-[580px] sm:min-h-[640px] lg:min-h-[700px] flex items-center bg-[#102C63] overflow-hidden"
+      className="relative w-full min-h-[560px] sm:min-h-[620px] lg:min-h-[680px] flex items-center bg-[#49352D] overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
-      aria-label="Hero Section"
+      aria-label="Hero Section - VN Vidhyapeeth"
     >
       {slides.map((slide, index) => {
         const isActive = index === current;
@@ -45,74 +45,74 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
               isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
             }`}
           >
-            {/* Authentic Photography Background */}
+            {/* Real-Life Emotional Photography - High Visibility */}
             <div className="absolute inset-0">
               <ImageWithFallback
                 src={slide.image_url}
                 fallbackSrc="/images/ngo/hero-children-study.jpg"
-                alt={slide.title || 'VN Vidhyapeeth Social Welfare Activities'}
+                alt={slide.title || 'VN Vidhyapeeth Helping Children and Families'}
                 fill
                 priority={index === 0}
                 className="object-cover object-center"
               />
-              {/* Natural, warm gradient overlay - respectful to photograph */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#102C63]/90 via-[#102C63]/75 to-black/40" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#102C63]/80 via-transparent to-black/20" />
+              {/* Soft, warm gradient overlay - keeps photo vibrant while ensuring text readability */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#49352D]/90 via-[#49352D]/70 to-[#49352D]/25" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#49352D]/80 via-transparent to-transparent" />
             </div>
 
             {/* Slide Content */}
             <div className="relative z-20 h-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 flex flex-col justify-center">
-              <div className="max-w-2xl text-white space-y-6">
-                {/* Quiet, Dignified Mission Badge */}
+              <div className="max-w-2xl text-[#FFF8F0] space-y-6">
+                {/* Gentle Mission Eyebrow */}
                 {slide.badge && (
-                  <div className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-sm px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-medium tracking-wide text-white border border-white/20">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#D52D2D]" />
+                  <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium tracking-normal text-[#F4D6C6]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C87552]" />
                     <span>{slide.badge}</span>
                   </div>
                 )}
 
-                {/* Primary Headline */}
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.15]">
-                  {slide.title}{' '}
+                {/* Simple Emotional Headline */}
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif font-bold tracking-tight text-[#FFF8F0] leading-[1.12]">
+                  {slide.title.replace(/\.$/, '')}{' '}
                   {slide.highlight_text && (
-                    <span className="text-[#FFD278]">{slide.highlight_text}</span>
+                    <span className="text-[#F4D6C6]">{slide.highlight_text.replace(/\.$/, '')}</span>
                   )}
                 </h1>
 
-                {/* Emotional, Human Subtitle */}
-                <p className="text-base sm:text-lg lg:text-xl text-slate-100/90 leading-relaxed max-w-xl font-normal">
+                {/* Easy-to-understand Description */}
+                <p className="text-base sm:text-lg text-[#FFF8F0]/85 leading-relaxed max-w-xl font-normal">
                   {slide.subtitle}
                 </p>
 
-                {/* Focused Action CTAs */}
-                <div className="pt-2 flex flex-wrap items-center gap-4">
+                {/* Two Clear Action Buttons */}
+                <div className="pt-2 flex flex-wrap items-center gap-3">
+                  {/* 1. Donate Now - Primary Action */}
                   <Link
                     href={slide.cta_primary_link || '#donate'}
-                    className="inline-flex items-center gap-2.5 bg-[#D52D2D] hover:bg-[#B52222] text-white font-semibold text-base px-7 py-3.5 rounded-full shadow-md hover:shadow-lg transition-colors"
+                    className="inline-flex items-center gap-2 bg-[#C87552] hover:bg-[#B56140] text-white font-semibold text-sm px-7 py-3 rounded-xl shadow-xs transition-colors duration-150 active:scale-[0.99]"
                   >
-                    <Heart className="w-4 h-4 fill-white" />
-                    <span>{slide.cta_primary_text || 'Support Our Mission'}</span>
+                    <Heart className="w-4 h-4" />
+                    <span>{slide.cta_primary_text || 'Donate now'}</span>
                   </Link>
 
+                  {/* 2. See Our Work - Secondary Action */}
                   <Link
-                    href={slide.cta_secondary_link || '#initiatives'}
-                    className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-medium text-base px-6 py-3.5 rounded-full backdrop-blur-sm border border-white/30 transition-colors"
+                    href={slide.cta_secondary_link || '#our-work'}
+                    className="inline-flex items-center gap-2 bg-[#FFF8F0] hover:bg-white text-[#49352D] hover:text-[#C87552] font-medium text-sm px-6 py-3 rounded-xl transition-colors duration-150 border border-[#EFE4DC] active:scale-[0.99]"
                   >
-                    <span>{slide.cta_secondary_text || 'Explore Our Work'}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <span>{slide.cta_secondary_text || 'See our work'}</span>
+                    <ArrowRight className="w-4 h-4 text-[#78665E]" />
                   </Link>
                 </div>
 
-                {/* Quiet Trust Declaration */}
-                <div className="pt-4 flex items-center gap-6 text-xs sm:text-sm text-slate-200/80">
-                  <span className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    Registered Social Welfare Trust
-                  </span>
+                {/* Quick Trust Reassurance */}
+                <div className="pt-2 flex items-center gap-3 text-xs text-[#F4D6C6]/80 font-normal">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4 text-[#78866B]" />
+                    <span>Registered Social Welfare Trust</span>
+                  </div>
                   <span>•</span>
                   <span>Section 80G Tax Exemption</span>
-                  <span className="hidden sm:inline">•</span>
-                  <span className="hidden sm:inline">100% Verified Work</span>
                 </div>
               </div>
             </div>
@@ -120,36 +120,38 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
         );
       })}
 
-      {/* Slide Navigation Controls (Only if > 1 slide) */}
+      {/* Slider Controls */}
       {slides.length > 1 && (
-        <div className="absolute bottom-6 right-6 z-30 flex items-center gap-2">
+        <>
           <button
             onClick={prevSlide}
-            aria-label="Previous slide"
-            className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center backdrop-blur-sm border border-white/20 transition-colors"
+            aria-label="Previous Slide"
+            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-[#49352D]/60 hover:bg-[#C87552] text-white items-center justify-center backdrop-blur-sm transition-all border border-white/20"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <div className="flex items-center gap-1.5 px-2">
+          <button
+            onClick={nextSlide}
+            aria-label="Next Slide"
+            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-[#49352D]/60 hover:bg-[#C87552] text-white items-center justify-center backdrop-blur-sm transition-all border border-white/20"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+
+          {/* Dots Indicator */}
+          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2.5">
             {slides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
                 aria-label={`Go to slide ${i + 1}`}
-                className={`h-2 rounded-full transition-all ${
-                  i === current ? 'w-6 bg-[#FFD278]' : 'w-2 bg-white/40'
+                className={`h-2.5 rounded-full transition-all ${
+                  i === current ? 'w-8 bg-[#C87552]' : 'w-2.5 bg-[#FFF8F0]/40 hover:bg-[#FFF8F0]/70'
                 }`}
               />
             ))}
           </div>
-          <button
-            onClick={nextSlide}
-            aria-label="Next slide"
-            className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center backdrop-blur-sm border border-white/20 transition-colors"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-        </div>
+        </>
       )}
     </section>
   );

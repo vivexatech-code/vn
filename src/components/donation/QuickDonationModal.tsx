@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   X, Heart, CheckCircle2, QrCode, CreditCard, Landmark,
-  Copy, ShieldCheck, ArrowRight, ArrowLeft, Smartphone, Download, Printer
+  Copy, ShieldCheck, ArrowRight, ArrowLeft, Smartphone, Download, Printer, Sparkles
 } from 'lucide-react';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
@@ -34,7 +34,7 @@ export default function QuickDonationModal({
   const [customAmount, setCustomAmount] = useState<string>('');
   const [selectedCampaign, setSelectedCampaign] = useState<string>(defaultCampaign);
 
-  // Step 2: Minimal Donor Details
+  // Step 2: Minimal Donor Details (Email optional)
   const [donorName, setDonorName] = useState('');
   const [donorPhone, setDonorPhone] = useState('');
   const [donorEmail, setDonorEmail] = useState('');
@@ -57,13 +57,20 @@ export default function QuickDonationModal({
     status: string;
   } | null>(null);
 
-  const quickAmounts = [101, 251, 501, 1001, 2501];
+  const quickAmounts = [
+    { amount: 101, label: '₹101', note: 'Help Someone' },
+    { amount: 251, label: '₹251', note: 'Support a Child' },
+    { amount: 501, label: '₹501', note: 'Basic Needs' },
+    { amount: 1001, label: '₹1,001', note: 'Bigger Impact' },
+    { amount: 2501, label: '₹2,501', note: 'Sponsor Child' }
+  ];
 
   const campaigns = [
     'Wherever Most Needed',
     "Children's Education",
     'Food Distribution & Hunger Relief',
     'Free School Stationery',
+    'Helping Poor Families',
     'General Social Welfare'
   ];
 
@@ -169,6 +176,10 @@ export default function QuickDonationModal({
         status: data.status
       });
 
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('vnv_donation_completed', 'true');
+      }
+
       setStep(4);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Failed to register donation';
@@ -178,37 +189,36 @@ export default function QuickDonationModal({
     }
   };
 
-  // UPI deep link for mobile devices
   const upiDeepLink = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent('VN Vidhyapeeth')}&am=${effectiveAmount}&cu=INR&tn=${encodeURIComponent(`Donation for ${selectedCampaign}`)}`;
 
   if (!isOpen) return null;
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 bg-[#49352D]/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-in fade-in duration-200"
       onClick={() => setIsOpen(false)}
       role="dialog"
       aria-modal="true"
     >
       <div
-        className="relative bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-200 my-auto"
+        className="relative bg-white rounded-2xl max-w-xl w-full overflow-hidden shadow-xl border border-[#EFE4DC] my-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header Bar */}
-        <div className="bg-[#102C63] text-white p-5 sm:p-6 flex items-center justify-between">
+        {/* Header Bar - Warm Deep Brown */}
+        <div className="bg-[#49352D] text-[#FFF8F0] p-5 sm:p-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#D52D2D] flex items-center justify-center shadow-xs">
-              <Heart className="w-5 h-5 text-white fill-white" />
+            <div className="w-9 h-9 rounded-xl bg-[#C87552] flex items-center justify-center shadow-xs">
+              <Heart className="w-4 h-4 text-white fill-white" />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold leading-tight">
+              <h2 className="text-base font-semibold leading-tight">
                 VN Vidhyapeeth Donation
               </h2>
-              <span className="text-[11px] text-blue-200 block">
-                {step === 1 && 'Step 1: Select Amount & Cause'}
-                {step === 2 && 'Step 2: Donor Details'}
-                {step === 3 && 'Step 3: Payment Method'}
-                {step === 4 && 'Step 4: Official Receipt & Confirmation'}
+              <span className="text-[11px] text-[#F4D6C6] block mt-0.5">
+                {step === 1 && 'Step 1: Select amount and cause'}
+                {step === 2 && 'Step 2: Donor details'}
+                {step === 3 && 'Step 3: Payment method'}
+                {step === 4 && 'Step 4: Official receipt and confirmation'}
               </span>
             </div>
           </div>
@@ -216,16 +226,16 @@ export default function QuickDonationModal({
           <button
             onClick={() => setIsOpen(false)}
             aria-label="Close Donation Modal"
-            className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition"
+            className="w-7 h-7 rounded-lg bg-white/10 hover:bg-[#C87552] text-white flex items-center justify-center transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Progress Bar */}
-        <div className="w-full bg-slate-100 h-1">
+        {/* Progress Bar in Terracotta */}
+        <div className="w-full bg-[#FFF8F0] h-1.5 border-b border-[#EFE4DC]">
           <div
-            className="bg-[#D52D2D] h-full transition-all duration-300"
+            className="bg-[#C87552] h-full transition-all duration-300"
             style={{ width: `${(step / 4) * 100}%` }}
           />
         </div>
@@ -243,85 +253,82 @@ export default function QuickDonationModal({
           {step === 1 && (
             <form onSubmit={handleProceedToDetails} className="space-y-5">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
-                  Select Donation Amount:
+                <label className="block text-xs font-medium text-[#78665E] mb-2.5">
+                  Select donation amount:
                 </label>
                 <div className="grid grid-cols-3 sm:grid-cols-5 gap-2.5">
-                  {quickAmounts.map((amt) => {
-                    const isSelected = selectedAmount === amt && !customAmount;
+                  {quickAmounts.map((item) => {
+                    const isSelected = selectedAmount === item.amount && !customAmount;
                     return (
                       <button
-                        key={amt}
                         type="button"
+                        key={item.amount}
                         onClick={() => {
-                          setSelectedAmount(amt);
+                          setSelectedAmount(item.amount);
                           setCustomAmount('');
                         }}
-                        className={`py-2.5 px-3 rounded-xl text-center font-bold text-sm transition ${
+                        className={`py-3 px-2 rounded-xl border text-center transition-colors ${
                           isSelected
-                            ? 'bg-[#183F91] text-white shadow-xs ring-2 ring-[#183F91]/20'
-                            : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
+                            ? 'bg-[#F4D6C6]/40 border-[#C87552] text-[#C87552]'
+                            : 'bg-[#FFF8F0]/40 border-[#EFE4DC] text-[#49352D] hover:border-[#F4D6C6]'
                         }`}
                       >
-                        ₹{amt.toLocaleString('en-IN')}
+                        <span className="block text-sm sm:text-base font-serif font-bold tabular-nums">
+                          {item.label}
+                        </span>
+                        <span className="text-[10px] text-[#78665E] block leading-tight mt-0.5">
+                          {item.note}
+                        </span>
                       </button>
                     );
                   })}
                 </div>
-              </div>
 
-              {/* Custom Amount */}
-              <div>
-                <label className="block text-xs font-medium text-slate-600 mb-1">
-                  Or enter custom amount (₹ INR):
-                </label>
-                <div className="relative">
-                  <span className="absolute left-3.5 top-2.5 text-sm font-semibold text-slate-400">₹</span>
-                  <input
-                    type="number"
-                    min="10"
-                    placeholder="Enter other amount (e.g. 1500)"
-                    value={customAmount}
-                    onChange={(e) => {
-                      setCustomAmount(e.target.value);
-                      if (e.target.value) setSelectedAmount(0);
-                    }}
-                    className="w-full pl-8 pr-4 py-2 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-1 focus:ring-[#183F91] focus:outline-none"
-                  />
+                <div className="mt-3">
+                  <label className="block text-xs text-[#78665E] mb-1 font-medium">
+                    Or enter custom amount (₹ INR):
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-semibold text-[#78665E]">₹</span>
+                    <input
+                      type="number"
+                      min="10"
+                      placeholder="Enter other amount (e.g. 1500)"
+                      value={customAmount}
+                      onChange={(e) => setCustomAmount(e.target.value)}
+                      className="w-full pl-8 pr-4 py-2 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-sm font-medium text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden"
+                    />
+                  </div>
                 </div>
               </div>
 
-              {/* Campaign Selection */}
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
-                  Allocate Donation To:
+                <label className="block text-xs font-medium text-[#78665E] mb-1.5">
+                  Allocate donation to:
                 </label>
                 <select
                   value={selectedCampaign}
                   onChange={(e) => setSelectedCampaign(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-medium focus:ring-1 focus:ring-[#183F91] focus:outline-none bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-sm text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden font-medium"
                 >
                   {campaigns.map((camp) => (
-                    <option key={camp} value={camp}>
-                      {camp}
-                    </option>
+                    <option key={camp} value={camp}>{camp}</option>
                   ))}
                 </select>
               </div>
 
-              {/* Summary Pill & Next Button */}
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center gap-2 bg-[#D52D2D] hover:bg-[#b82424] text-white py-3.5 rounded-xl font-bold text-sm shadow-md transition"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#C87552] hover:bg-[#B56140] text-white py-2.5 rounded-xl font-medium text-xs sm:text-sm shadow-xs transition-colors active:scale-[0.99]"
                 >
                   <span>Donate ₹{effectiveAmount.toLocaleString('en-IN')}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
 
-              <div className="flex items-center justify-center gap-2 text-slate-400 text-[11px] pt-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <div className="text-center text-[11px] text-[#78665E] flex items-center justify-center gap-1.5 pt-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#78866B]" />
                 <span>Registered Trust (Indian Trusts Act 1882) • No Account Required</span>
               </div>
             </form>
@@ -330,70 +337,70 @@ export default function QuickDonationModal({
           {/* STEP 2: Donor Details */}
           {step === 2 && (
             <form onSubmit={handleProceedToPayment} className="space-y-4">
-              <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 flex items-center justify-between">
+              <div className="bg-[#FFF8F0] p-3 rounded-xl border border-[#EFE4DC] flex items-center justify-between text-xs">
                 <div>
-                  <span className="text-[11px] text-slate-500 block">Donating to:</span>
-                  <span className="text-xs font-bold text-[#102C63]">{selectedCampaign}</span>
+                  <span className="text-[#78665E] block">Donating to:</span>
+                  <strong className="text-[#49352D]">{selectedCampaign}</strong>
                 </div>
                 <div className="text-right">
-                  <span className="text-[11px] text-slate-500 block">Amount:</span>
-                  <span className="text-sm font-extrabold text-[#D52D2D]">₹{effectiveAmount.toLocaleString('en-IN')}</span>
+                  <span className="text-[#78665E] block">Amount:</span>
+                  <strong className="text-[#C87552] text-sm">₹{effectiveAmount.toLocaleString('en-IN')}</strong>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
-                  Full Name <span className="text-red-500">*</span>
+                <label className="block text-xs font-medium text-[#49352D] mb-1">
+                  Full Name *
                 </label>
                 <input
                   type="text"
                   required
+                  placeholder="e.g. Anand Mehra"
                   value={donorName}
                   onChange={(e) => setDonorName(e.target.value)}
-                  placeholder="e.g. Anand Mehra"
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-sm text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
-                  Mobile Number <span className="text-red-500">*</span>
+                <label className="block text-xs font-medium text-[#49352D] mb-1">
+                  Mobile Number *
                 </label>
                 <input
                   type="tel"
                   required
+                  placeholder="e.g. 9876543210"
                   value={donorPhone}
                   onChange={(e) => setDonorPhone(e.target.value)}
-                  placeholder="e.g. 9876543210"
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-sm text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden"
                 />
-                <span className="text-[10px] text-slate-400 mt-0.5 block">Used to send your instant receipt &amp; confirmation</span>
+                <span className="text-[10px] text-[#78665E]">We will send donation confirmation &amp; receipt via WhatsApp/SMS</span>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
-                  Email Address <span className="text-slate-400 font-normal">(Optional)</span>
+                <label className="block text-xs font-medium text-[#49352D] mb-1">
+                  Email Address <span className="text-[#78665E] font-normal">(Optional)</span>
                 </label>
                 <input
                   type="email"
+                  placeholder="e.g. anand@example.com"
                   value={donorEmail}
                   onChange={(e) => setDonorEmail(e.target.value)}
-                  placeholder="e.g. anand@example.com"
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-sm text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-slate-700 mb-1">
-                  PAN Number <span className="text-slate-400 font-normal">(Optional, for 80G Tax Exemption)</span>
+                <label className="block text-xs font-medium text-[#49352D] mb-1">
+                  PAN Number <span className="text-[#78665E] font-normal">(Optional, for 80G tax exemption)</span>
                 </label>
                 <input
                   type="text"
+                  maxLength={10}
+                  placeholder="ABCDE1234F"
                   value={panNumber}
                   onChange={(e) => setPanNumber(e.target.value.toUpperCase())}
-                  placeholder="e.g. ABCDE1234F"
-                  maxLength={10}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none uppercase"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-sm uppercase text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden font-mono"
                 />
               </div>
 
@@ -401,119 +408,111 @@ export default function QuickDonationModal({
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="px-4 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold flex items-center gap-1 transition"
+                  className="px-4 py-2.5 rounded-xl border border-[#EFE4DC] text-xs font-medium text-[#49352D] hover:bg-[#FFF8F0] transition-colors flex items-center gap-1"
                 >
-                  <ArrowLeft className="w-4 h-4" />
+                  <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Back</span>
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-[#D52D2D] hover:bg-[#b82424] text-white py-3 rounded-xl font-bold text-sm shadow-md transition"
+                  className="flex-1 inline-flex items-center justify-center gap-2 bg-[#C87552] hover:bg-[#B56140] text-white py-2.5 rounded-xl font-medium text-xs sm:text-sm shadow-xs transition-colors active:scale-[0.99]"
                 >
-                  <span>Continue to Payment</span>
+                  <span>Continue to payment</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </form>
           )}
 
-          {/* STEP 3: Payment Method Selection */}
+          {/* STEP 3: Payment Method */}
           {step === 3 && (
             <div className="space-y-4">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div className="bg-[#FFF8F0] p-3 rounded-xl border border-[#EFE4DC] flex items-center justify-between text-xs">
                 <div>
-                  <span className="text-[11px] text-slate-400 block">Donor</span>
-                  <span className="text-xs font-bold text-[#102C63]">{donorName}</span>
+                  <span className="text-[#78665E] block">Donor:</span>
+                  <strong className="text-[#49352D]">{donorName}</strong>
                 </div>
                 <div className="text-right">
-                  <span className="text-[11px] text-slate-400 block">Total Donation</span>
-                  <span className="text-base font-extrabold text-[#D52D2D]">₹{effectiveAmount.toLocaleString('en-IN')}</span>
+                  <span className="text-[#78665E] block">Total Donation:</span>
+                  <strong className="text-[#C87552] text-sm">₹{effectiveAmount.toLocaleString('en-IN')}</strong>
                 </div>
               </div>
 
-              {/* Payment Mode Selector Tabs */}
+              {/* Payment Option Tabs */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 <button
                   type="button"
                   onClick={() => setPaymentMode('upi_intent')}
-                  className={`p-2.5 rounded-xl text-center border text-xs font-bold transition flex flex-col items-center gap-1 ${
+                  className={`p-2.5 rounded-xl border text-center transition-all ${
                     paymentMode === 'upi_intent'
-                      ? 'bg-[#183F91] text-white border-[#183F91] shadow-xs'
-                      : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'
+                      ? 'bg-[#C87552] text-white border-[#C87552] shadow-xs font-bold'
+                      : 'bg-[#FFF8F0]/40 border-[#EFE4DC] text-[#49352D] hover:border-[#F4D6C6]'
                   }`}
                 >
-                  <Smartphone className="w-4 h-4" />
-                  <span>UPI App</span>
+                  <Smartphone className="w-4 h-4 mx-auto mb-1" />
+                  <span className="text-xs">UPI App</span>
                 </button>
-
                 <button
                   type="button"
                   onClick={() => setPaymentMode('upi_qr')}
-                  className={`p-2.5 rounded-xl text-center border text-xs font-bold transition flex flex-col items-center gap-1 ${
+                  className={`p-2.5 rounded-xl border text-center transition-all ${
                     paymentMode === 'upi_qr'
-                      ? 'bg-[#183F91] text-white border-[#183F91] shadow-xs'
-                      : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'
+                      ? 'bg-[#C87552] text-white border-[#C87552] shadow-xs font-bold'
+                      : 'bg-[#FFF8F0]/40 border-[#EFE4DC] text-[#49352D] hover:border-[#F4D6C6]'
                   }`}
                 >
-                  <QrCode className="w-4 h-4" />
-                  <span>UPI QR</span>
+                  <QrCode className="w-4 h-4 mx-auto mb-1" />
+                  <span className="text-xs">UPI QR</span>
                 </button>
-
                 <button
                   type="button"
                   onClick={() => setPaymentMode('gateway')}
-                  className={`p-2.5 rounded-xl text-center border text-xs font-bold transition flex flex-col items-center gap-1 ${
+                  className={`p-2.5 rounded-xl border text-center transition-all ${
                     paymentMode === 'gateway'
-                      ? 'bg-[#183F91] text-white border-[#183F91] shadow-xs'
-                      : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'
+                      ? 'bg-[#C87552] text-white border-[#C87552] shadow-xs font-bold'
+                      : 'bg-[#FFF8F0]/40 border-[#EFE4DC] text-[#49352D] hover:border-[#F4D6C6]'
                   }`}
                 >
-                  <CreditCard className="w-4 h-4" />
-                  <span>Cards / NetBank</span>
+                  <CreditCard className="w-4 h-4 mx-auto mb-1" />
+                  <span className="text-xs">Cards / NetBank</span>
                 </button>
-
                 <button
                   type="button"
                   onClick={() => setPaymentMode('bank')}
-                  className={`p-2.5 rounded-xl text-center border text-xs font-bold transition flex flex-col items-center gap-1 ${
+                  className={`p-2.5 rounded-xl border text-center transition-all ${
                     paymentMode === 'bank'
-                      ? 'bg-[#183F91] text-white border-[#183F91] shadow-xs'
-                      : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'
+                      ? 'bg-[#C87552] text-white border-[#C87552] shadow-xs font-bold'
+                      : 'bg-[#FFF8F0]/40 border-[#EFE4DC] text-[#49352D] hover:border-[#F4D6C6]'
                   }`}
                 >
-                  <Landmark className="w-4 h-4" />
-                  <span>NEFT / Bank</span>
+                  <Landmark className="w-4 h-4 mx-auto mb-1" />
+                  <span className="text-xs">NEFT / Bank</span>
                 </button>
               </div>
 
-              {/* Mode 1: UPI Intent (Mobile App Launch) */}
+              {/* Mode 1: UPI Intent */}
               {paymentMode === 'upi_intent' && (
-                <div className="p-4 bg-blue-50/70 border border-blue-100 rounded-2xl space-y-3 text-center">
-                  <div className="w-10 h-10 rounded-full bg-[#183F91] text-white flex items-center justify-center mx-auto">
-                    <Smartphone className="w-5 h-5" />
-                  </div>
-                  <h4 className="text-sm font-bold text-[#102C63]">
-                    Pay Directly via Any UPI App
-                  </h4>
-                  <p className="text-xs text-slate-600 max-w-sm mx-auto">
-                    Click below to open Google Pay, PhonePe, Paytm, or BHIM with ₹{effectiveAmount} pre-filled.
+                <div className="p-4 bg-[#FFF8F0] border border-[#EFE4DC] rounded-2xl space-y-3 text-center">
+                  <p className="text-xs text-[#78665E]">
+                    Tap below to launch Google Pay, PhonePe, Paytm, or BHIM directly:
                   </p>
 
                   <a
                     href={upiDeepLink}
                     onClick={() => handleCompleteDonation('UPI (Mobile Intent)')}
-                    className="inline-flex items-center justify-center gap-2 bg-[#183F91] hover:bg-[#102C63] text-white py-3 px-6 rounded-xl font-bold text-xs sm:text-sm shadow-md transition w-full"
+                    className="inline-flex items-center justify-center gap-2 bg-[#78866B] hover:bg-[#657358] text-white py-2.5 px-6 rounded-xl font-medium text-xs sm:text-sm shadow-xs transition-colors w-full active:scale-[0.99]"
                   >
+                    <Smartphone className="w-4 h-4" />
                     <span>Launch UPI App &amp; Complete Donation</span>
                     <ArrowRight className="w-4 h-4" />
                   </a>
 
-                  <div className="pt-1 flex items-center justify-center gap-2 text-[11px] text-slate-500">
+                  <div className="pt-1 flex items-center justify-center gap-2 text-[11px] text-[#78665E]">
                     <span>Or copy UPI ID:</span>
-                    <code className="bg-white px-2 py-0.5 rounded font-mono font-bold text-[#102C63]">{upiId}</code>
+                    <code className="bg-white px-2 py-0.5 rounded font-mono font-semibold text-[#49352D]">{upiId}</code>
                     <button
                       onClick={() => handleCopy(upiId, 'upi_intent')}
-                      className="text-[#183F91] hover:underline font-semibold"
+                      className="text-[#C87552] hover:underline font-medium"
                     >
                       {copiedField === 'upi_intent' ? 'Copied' : 'Copy'}
                     </button>
@@ -523,8 +522,8 @@ export default function QuickDonationModal({
 
               {/* Mode 2: UPI QR Code */}
               {paymentMode === 'upi_qr' && (
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-                  <div className="relative w-36 h-36 bg-white rounded-xl p-2 border border-slate-200 flex-shrink-0 shadow-xs">
+                <div className="p-4 bg-[#FFF8F0] border border-[#EFE4DC] rounded-xl flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
+                  <div className="relative w-36 h-36 bg-white rounded-xl p-2 border border-[#EFE4DC] flex-shrink-0 shadow-xs">
                     <ImageWithFallback
                       src={qrCodeUrl}
                       fallbackSrc="/images/placeholder-general.svg"
@@ -534,19 +533,19 @@ export default function QuickDonationModal({
                     />
                   </div>
                   <div className="space-y-2 flex-1">
-                    <h4 className="text-sm font-bold text-[#102C63]">
+                    <h4 className="text-sm font-semibold text-[#49352D]">
                       Scan QR Code to Pay ₹{effectiveAmount.toLocaleString('en-IN')}
                     </h4>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-[#78665E]">
                       Open any UPI scanner on your phone to transfer directly to VN Vidhyapeeth.
                     </p>
                     <div className="flex items-center justify-center sm:justify-start gap-2 pt-1">
-                      <code className="bg-white px-2.5 py-1 rounded-md border font-mono text-xs font-bold text-[#102C63]">
+                      <code className="bg-white px-2.5 py-1 rounded-md border border-[#EFE4DC] font-mono text-xs font-semibold text-[#49352D]">
                         {upiId}
                       </code>
                       <button
                         onClick={() => handleCopy(upiId, 'upi_qr')}
-                        className="bg-[#183F91] text-white px-2.5 py-1 rounded-md text-xs font-semibold"
+                        className="bg-[#C87552] text-white px-2.5 py-1 rounded-md text-xs font-medium"
                       >
                         {copiedField === 'upi_qr' ? 'Copied' : 'Copy'}
                       </button>
@@ -556,10 +555,10 @@ export default function QuickDonationModal({
                       type="button"
                       disabled={isSubmitting}
                       onClick={() => handleCompleteDonation('UPI / QR Scan')}
-                      className="w-full inline-flex items-center justify-center gap-1.5 bg-[#D52D2D] hover:bg-[#b82424] text-white py-2 px-3 rounded-lg text-xs font-bold transition shadow-xs mt-2"
+                      className="w-full inline-flex items-center justify-center gap-1.5 bg-[#78866B] hover:bg-[#657358] text-white py-2 px-3 rounded-xl text-xs font-medium transition-colors shadow-xs mt-2"
                     >
                       <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>I Have Completed UPI Payment</span>
+                      <span>I have completed UPI payment</span>
                     </button>
                   </div>
                 </div>
@@ -567,11 +566,11 @@ export default function QuickDonationModal({
 
               {/* Mode 3: Instant Gateway (Card / NetBanking) */}
               {paymentMode === 'gateway' && (
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
-                  <h4 className="text-xs font-bold text-[#102C63] uppercase tracking-wider">
-                    Secure Online Payment Gateway
+                <div className="p-4 bg-[#FFF8F0] border border-[#EFE4DC] rounded-xl space-y-3">
+                  <h4 className="text-xs font-semibold text-[#49352D]">
+                    Secure online payment gateway
                   </h4>
-                  <p className="text-xs text-slate-600">
+                  <p className="text-xs text-[#78665E]">
                     Pay securely using any Indian Debit Card, Credit Card, or Net Banking portal with 256-bit encryption.
                   </p>
 
@@ -579,7 +578,7 @@ export default function QuickDonationModal({
                     type="button"
                     disabled={isSubmitting}
                     onClick={() => handleCompleteDonation('Online Gateway (Cards/NetBanking)')}
-                    className="w-full inline-flex items-center justify-center gap-2 bg-[#D52D2D] hover:bg-[#b82424] text-white py-3 rounded-xl font-bold text-sm shadow-md transition disabled:opacity-50"
+                    className="w-full inline-flex items-center justify-center gap-2 bg-[#C87552] hover:bg-[#B56140] text-white py-2.5 rounded-xl font-medium text-xs sm:text-sm shadow-xs transition-colors disabled:opacity-50 active:scale-[0.99]"
                   >
                     <CreditCard className="w-4 h-4" />
                     <span>{isSubmitting ? 'Processing Payment...' : `Pay ₹${effectiveAmount.toLocaleString('en-IN')} Securely`}</span>
@@ -589,29 +588,29 @@ export default function QuickDonationModal({
 
               {/* Mode 4: Direct Bank Transfer */}
               {paymentMode === 'bank' && (
-                <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2 text-xs">
-                  <div className="flex justify-between py-1 border-b border-slate-200">
-                    <span className="text-slate-500">Bank Name</span>
-                    <span className="font-bold text-[#102C63]">{bankName}</span>
+                <div className="p-4 bg-[#FFF8F0] border border-[#EFE4DC] rounded-xl space-y-2 text-xs">
+                  <div className="flex justify-between py-1 border-b border-[#EFE4DC]">
+                    <span className="text-[#78665E]">Bank name</span>
+                    <span className="font-semibold text-[#49352D]">{bankName}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-slate-200">
-                    <span className="text-slate-500">Account Name</span>
-                    <span className="font-bold text-[#102C63]">{bankHolder}</span>
+                  <div className="flex justify-between py-1 border-b border-[#EFE4DC]">
+                    <span className="text-[#78665E]">Account name</span>
+                    <span className="font-semibold text-[#49352D]">{bankHolder}</span>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-slate-200">
-                    <span className="text-slate-500">Account Number</span>
+                  <div className="flex justify-between py-1 border-b border-[#EFE4DC]">
+                    <span className="text-[#78665E]">Account number</span>
                     <div className="flex items-center gap-1.5">
-                      <span className="font-mono font-bold text-[#102C63]">{bankAccount}</span>
-                      <button onClick={() => handleCopy(bankAccount, 'acc')} className="text-[#183F91] font-semibold underline">
+                      <span className="font-mono font-semibold text-[#49352D]">{bankAccount}</span>
+                      <button onClick={() => handleCopy(bankAccount, 'acc')} className="text-[#C87552] font-medium underline">
                         {copiedField === 'acc' ? 'Copied' : 'Copy'}
                       </button>
                     </div>
                   </div>
-                  <div className="flex justify-between py-1 border-b border-slate-200">
-                    <span className="text-slate-500">IFSC Code</span>
+                  <div className="flex justify-between py-1 border-b border-[#EFE4DC]">
+                    <span className="text-[#78665E]">IFSC code</span>
                     <div className="flex items-center gap-1.5">
-                      <span className="font-mono font-bold text-[#102C63]">{bankIfsc}</span>
-                      <button onClick={() => handleCopy(bankIfsc, 'ifsc')} className="text-[#183F91] font-semibold underline">
+                      <span className="font-mono font-semibold text-[#49352D]">{bankIfsc}</span>
+                      <button onClick={() => handleCopy(bankIfsc, 'ifsc')} className="text-[#C87552] font-medium underline">
                         {copiedField === 'ifsc' ? 'Copied' : 'Copy'}
                       </button>
                     </div>
@@ -621,9 +620,9 @@ export default function QuickDonationModal({
                     type="button"
                     disabled={isSubmitting}
                     onClick={() => handleCompleteDonation('Bank Transfer (NEFT/IMPS)')}
-                    className="w-full inline-flex items-center justify-center gap-1.5 bg-[#183F91] hover:bg-[#102C63] text-white py-2.5 rounded-xl text-xs font-bold transition shadow-xs mt-3"
+                    className="w-full inline-flex items-center justify-center gap-1.5 bg-[#49352D] hover:bg-[#382822] text-white py-2.5 rounded-xl text-xs font-medium transition-colors shadow-xs mt-3 active:scale-[0.99]"
                   >
-                    <span>Record Bank Transfer for Receipt</span>
+                    <span>Record bank transfer for receipt</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -633,7 +632,7 @@ export default function QuickDonationModal({
                 <button
                   type="button"
                   onClick={() => setStep(2)}
-                  className="text-slate-500 hover:text-slate-700 flex items-center gap-1 font-semibold"
+                  className="text-[#78665E] hover:text-[#49352D] flex items-center gap-1 font-semibold"
                 >
                   <ArrowLeft className="w-3.5 h-3.5" />
                   <span>Edit Donor Details</span>
@@ -642,40 +641,48 @@ export default function QuickDonationModal({
             </div>
           )}
 
-          {/* STEP 4: Confirmation & Receipt */}
+          {/* STEP 4: Confirmation & Receipt with Clear Next Steps */}
           {step === 4 && receiptData && (
             <div className="text-center space-y-4 py-2">
-              <div className="w-14 h-14 bg-emerald-600 text-white rounded-full flex items-center justify-center mx-auto shadow-md">
+              <div className="w-14 h-14 bg-[#EBF0E6] text-[#78866B] rounded-full flex items-center justify-center mx-auto shadow-xs">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
 
               <div>
-                <h3 className="text-xl font-bold text-[#102C63]">
+                <h3 className="text-xl font-bold text-[#49352D]">
                   Thank You for Your Generosity!
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-sm mx-auto">
-                  Your contribution of <strong className="text-[#D52D2D]">₹{receiptData.amount.toLocaleString('en-IN')}</strong> to <strong>{receiptData.campaign_title}</strong> directly brings hope and relief.
+                <p className="text-xs sm:text-sm text-[#78665E] mt-1 max-w-sm mx-auto">
+                  Your contribution of <strong className="text-[#C87552]">₹{receiptData.amount.toLocaleString('en-IN')}</strong> to <strong>{receiptData.campaign_title}</strong> directly brings hope and relief.
                 </p>
               </div>
 
               {/* Receipt Summary Card */}
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-left space-y-2 text-xs">
-                <div className="flex justify-between pb-1.5 border-b border-slate-200">
-                  <span className="text-slate-500">Official Receipt No:</span>
-                  <span className="font-mono font-bold text-[#183F91]">{receiptData.receipt_no}</span>
+              <div className="p-4 bg-[#FFF8F0] rounded-2xl border border-[#EFE4DC] text-left space-y-2 text-xs font-mono">
+                <div className="flex justify-between pb-1.5 border-b border-[#EFE4DC]">
+                  <span className="text-[#78665E] font-sans">Official Receipt No:</span>
+                  <span className="font-bold text-[#C87552]">{receiptData.receipt_no}</span>
                 </div>
-                <div className="flex justify-between pb-1.5 border-b border-slate-200">
-                  <span className="text-slate-500">Transaction Reference:</span>
-                  <span className="font-mono font-medium text-slate-700">{receiptData.transaction_id}</span>
+                <div className="flex justify-between pb-1.5 border-b border-[#EFE4DC]">
+                  <span className="text-[#78665E] font-sans">Transaction Reference:</span>
+                  <span className="font-medium text-[#49352D]">{receiptData.transaction_id}</span>
                 </div>
-                <div className="flex justify-between pb-1.5 border-b border-slate-200">
-                  <span className="text-slate-500">Donor Name:</span>
-                  <span className="font-semibold text-slate-800">{receiptData.donor_name}</span>
+                <div className="flex justify-between pb-1.5 border-b border-[#EFE4DC]">
+                  <span className="text-[#78665E] font-sans">Donor Name:</span>
+                  <span className="font-semibold text-[#49352D] font-sans">{receiptData.donor_name}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-slate-500">Status:</span>
-                  <span className="font-bold text-emerald-700 uppercase">{receiptData.status}</span>
+                  <span className="text-[#78665E] font-sans">Status:</span>
+                  <span className="font-bold text-[#78866B] uppercase">{receiptData.status}</span>
                 </div>
+              </div>
+
+              {/* What Happens Next */}
+              <div className="p-4 bg-[#EBF0E6]/60 border border-[#78866B]/30 rounded-2xl text-left text-xs text-[#49352D] space-y-1.5">
+                <span className="font-bold block text-[#78866B]">Next Steps for Your Contribution:</span>
+                <p>1. Your funds are credited directly to the VN Vidhyapeeth registered trust account.</p>
+                <p>2. Your receipt has been archived for 80G tax benefit calculation.</p>
+                <p>3. WhatsApp our support desk (+91 7015358183) anytime for questions or updates.</p>
               </div>
 
               {/* Action Buttons */}
@@ -683,23 +690,23 @@ export default function QuickDonationModal({
                 <Link
                   href="/donate"
                   onClick={() => setIsOpen(false)}
-                  className="inline-flex items-center gap-2 bg-[#183F91] hover:bg-[#102C63] text-white px-5 py-2.5 rounded-xl text-xs font-bold transition shadow-xs"
+                  className="inline-flex items-center gap-2 bg-[#C87552] hover:bg-[#B56140] text-white px-5 py-2.5 rounded-xl text-xs font-medium transition-colors shadow-xs"
                 >
                   <Download className="w-3.5 h-3.5" />
-                  <span>Download Full 80G Receipt</span>
+                  <span>Download full 80G receipt</span>
                 </Link>
 
                 <button
                   type="button"
                   onClick={() => window.print()}
-                  className="inline-flex items-center gap-1.5 bg-white border border-slate-200 text-slate-700 px-4 py-2.5 rounded-xl text-xs font-semibold hover:bg-slate-50 transition"
+                  className="inline-flex items-center gap-1.5 bg-white border border-[#EFE4DC] text-[#49352D] px-4 py-2.5 rounded-xl text-xs font-medium hover:bg-[#FFF8F0] transition-colors shadow-xs"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  <span>Print Summary</span>
+                  <span>Print summary</span>
                 </button>
               </div>
 
-              <div className="pt-2 text-[11px] text-slate-400">
+              <div className="pt-2 text-[11px] text-[#78665E]">
                 A confirmation has been recorded with VN Vidhyapeeth Educational &amp; Social Welfare Trust.
               </div>
             </div>

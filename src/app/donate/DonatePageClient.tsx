@@ -2,11 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { SiteSettings, Campaign } from '@/lib/data';
 import {
   Heart, Landmark, QrCode, CreditCard, CheckCircle2,
-  Copy, ShieldCheck, ArrowRight, Printer, Sparkles, BookOpen, Utensils, Smartphone
+  Copy, ShieldCheck, ArrowRight, Printer, Sparkles, Smartphone, Download
 } from 'lucide-react';
 import ImageWithFallback from '@/components/ui/ImageWithFallback';
 
@@ -52,7 +51,14 @@ export default function DonatePageClient({ settings, campaigns }: DonatePageClie
 
   const amount = customAmount ? Number(customAmount) : selectedTier;
 
-  const quickAmounts = [101, 251, 501, 1001, 2501, 5000];
+  const quickAmounts = [
+    { val: 101, label: '₹101', note: 'Help Someone' },
+    { val: 251, label: '₹251', note: 'Support a Child' },
+    { val: 501, label: '₹501', note: 'Basic Needs' },
+    { val: 1001, label: '₹1,001', note: 'Bigger Impact' },
+    { val: 2501, label: '₹2,501', note: 'Sponsor Child' },
+    { val: 5000, label: '₹5,000', note: 'Family Relief' }
+  ];
 
   const handleCopy = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -100,105 +106,107 @@ export default function DonatePageClient({ settings, campaigns }: DonatePageClie
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to process donation');
+      if (!res.ok) throw new Error(data.error || 'Failed to submit donation');
 
       setReceipt({
         receipt_no: data.receipt_no,
         id: data.donation_id,
         amount,
-        date: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }),
+        date: new Date().toLocaleDateString('en-IN', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        }),
         campaign: selectedCampaign,
         donor_name: formData.donor_name.trim(),
-        pan: formData.pan_number || 'N/A',
-        status: data.status
+        pan: formData.pan_number.trim().toUpperCase() || 'NOT PROVIDED',
+        status: isBank ? 'pending verification' : 'verified'
       });
+
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('vnv_donation_completed', 'true');
+      }
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Error processing donation';
-      alert(msg);
+      const msg = err instanceof Error ? err.message : 'Something went wrong';
+      alert(`Donation submission error: ${msg}`);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="py-12 sm:py-16 bg-[#F8F9FA]">
+    <div className="min-h-screen bg-[#FFF8F0] py-12 sm:py-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {receipt ? (
-          /* Receipt Screen */
-          <div className="max-w-2xl mx-auto bg-white rounded-3xl p-6 sm:p-10 shadow-xl border border-slate-200">
-            <div id="receipt-print-area" className="space-y-6">
-              <div className="flex items-center justify-between border-b pb-4">
-                <div className="flex items-center gap-3">
-                  <div className="relative w-12 h-12 flex-shrink-0">
-                    <Image
-                      src={settings.logo_url || '/images/logo.webp'}
-                      alt="VN Logo"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <h2 className="font-bold text-lg text-[#102C63]">VN VIDHYAPEETH</h2>
-                    <p className="text-xs text-slate-500">Regd. Educational &amp; Social Welfare Trust (1882)</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full uppercase">
-                    {receipt.status === 'verified' ? 'Verified Receipt' : 'Pending Verification'}
-                  </span>
-                  <p className="text-[11px] text-slate-400 mt-1">Date: {receipt.date}</p>
-                </div>
+          /* Official Instant Receipt with Clear Next Steps */
+          <div className="max-w-2xl mx-auto bg-white rounded-2xl p-6 sm:p-10 border border-[#EFE4DC] shadow-xs space-y-6 animate-in fade-in">
+            <div className="text-center space-y-2">
+              <div className="w-14 h-14 rounded-full bg-[#EBF0E6] text-[#78866B] flex items-center justify-center mx-auto shadow-xs">
+                <CheckCircle2 className="w-8 h-8" />
               </div>
+              <span className="text-xs font-medium text-[#C87552] block">
+                Official trust receipt
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-semibold text-[#49352D]">
+                Thank You for Your Generosity!
+              </h2>
+              <p className="text-xs sm:text-sm text-[#78665E] max-w-md mx-auto">
+                Your support directly reaches underprivileged children and needy families on the ground.
+              </p>
+            </div>
 
-              <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 text-center space-y-1">
-                <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Total Contribution Amount</span>
-                <div className="text-3xl font-extrabold text-[#D52D2D]">₹{receipt.amount.toLocaleString('en-IN')}</div>
-                <p className="text-xs text-slate-600 font-mono">Receipt No: <strong>{receipt.receipt_no}</strong></p>
+            {/* Receipt Summary */}
+            <div className="bg-[#FFF8F0] rounded-xl p-5 border border-[#EFE4DC] space-y-3 font-mono text-xs sm:text-sm text-[#49352D]">
+              <div className="flex justify-between border-b border-[#EFE4DC] pb-2">
+                <span className="text-[#78665E] font-sans">Receipt Number:</span>
+                <span className="font-semibold text-[#C87552]">{receipt.receipt_no}</span>
               </div>
-
-              <div className="grid grid-cols-2 gap-4 text-xs">
-                <div>
-                  <span className="text-slate-400 block">Donor Name:</span>
-                  <span className="font-bold text-slate-800">{receipt.donor_name}</span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block">PAN Number (80G):</span>
-                  <span className="font-bold text-slate-800 font-mono">{receipt.pan}</span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block">Allocated Purpose:</span>
-                  <span className="font-bold text-slate-800">{receipt.campaign}</span>
-                </div>
-                <div>
-                  <span className="text-slate-400 block">Payment Channel:</span>
-                  <span className="font-bold text-slate-800">{paymentMode}</span>
-                </div>
+              <div className="flex justify-between border-b border-[#EFE4DC] pb-2">
+                <span className="text-[#78665E] font-sans">Donor Name:</span>
+                <span className="font-semibold">{receipt.donor_name}</span>
               </div>
-
-              <div className="p-4 bg-blue-50/70 rounded-2xl border border-blue-100 text-xs text-slate-600 space-y-1">
-                <p className="font-semibold text-[#183F91]">Exemption &amp; Trust Declaration:</p>
-                <p>
-                  Donations made to VN Vidhyapeeth qualify for tax benefits under Section 80G of the Income Tax Act. Thank you for empowering underprivileged children and families.
-                </p>
+              <div className="flex justify-between border-b border-[#EFE4DC] pb-2">
+                <span className="text-[#78665E] font-sans">Contribution Amount:</span>
+                <span className="font-bold text-base text-[#C87552] font-serif tabular-nums">₹{receipt.amount.toLocaleString('en-IN')}</span>
+              </div>
+              <div className="flex justify-between border-b border-[#EFE4DC] pb-2">
+                <span className="text-[#78665E] font-sans">Allocated Initiative:</span>
+                <span className="font-medium">{receipt.campaign}</span>
+              </div>
+              <div className="flex justify-between border-b border-[#EFE4DC] pb-2">
+                <span className="text-[#78665E] font-sans">Date:</span>
+                <span>{receipt.date}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#78665E] font-sans">Verification Status:</span>
+                <span className="font-semibold uppercase text-[#78866B]">{receipt.status}</span>
               </div>
             </div>
 
-            <div className="pt-6 border-t mt-6 flex flex-wrap items-center justify-between gap-4">
+            {/* What Happens Next - Clearly Explained */}
+            <div className="bg-[#EBF0E6]/70 border border-[#78866B]/30 rounded-xl p-5 text-left text-xs sm:text-sm text-[#49352D] space-y-2">
+              <span className="font-medium text-[#78866B] block">Next Steps for Your Contribution:</span>
+              <p>• Your contribution has been registered with the VN Vidhyapeeth registered trust accounts.</p>
+              <p>• This donation is 100% tax-deductible under Section 80G of the Income Tax Act.</p>
+              <p>• You can print or save this summary immediately for your records.</p>
+              <p>• For questions or field distribution updates, contact our trust desk on WhatsApp at <a href="https://wa.me/917015358183" className="font-medium text-[#C87552] underline">+91 7015358183</a> quoting your receipt number.</p>
+            </div>
+
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="inline-flex items-center gap-2 bg-[#183F91] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow hover:bg-[#102C63] transition"
+                className="inline-flex items-center gap-2 bg-[#49352D] hover:bg-[#382822] text-white px-5 py-2.5 rounded-xl text-xs font-medium transition-colors shadow-xs"
               >
-                <Printer className="w-4 h-4" />
-                <span>Print / Save Receipt</span>
+                <Printer className="w-3.5 h-3.5" />
+                <span>Print official receipt</span>
               </button>
-
               <button
                 type="button"
                 onClick={() => setReceipt(null)}
-                className="text-xs font-semibold text-slate-600 hover:underline"
+                className="inline-flex items-center gap-2 bg-[#FFF8F0] hover:bg-white text-[#49352D] px-5 py-2.5 rounded-xl text-xs font-medium border border-[#EFE4DC] transition-colors shadow-xs"
               >
-                Make Another Contribution
+                <span>Make another contribution</span>
               </button>
             </div>
           </div>
@@ -208,52 +216,52 @@ export default function DonatePageClient({ settings, campaigns }: DonatePageClie
             {/* Left Column: Direct Causes & Bank Details */}
             <div className="lg:col-span-5 space-y-6">
               <div>
-                <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#D52D2D] bg-red-50 px-3 py-1 rounded-full uppercase">
-                  <Heart className="w-3.5 h-3.5 fill-[#D52D2D]" />
-                  Direct Grassroots Support
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[#C87552]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C87552]" />
+                  <span>Direct grassroots support</span>
                 </span>
-                <h1 className="text-2xl sm:text-3xl font-bold text-[#102C63] mt-3">
-                  Empower Someone's Tomorrow
+                <h1 className="text-3xl sm:text-4xl font-semibold text-[#49352D] mt-2 leading-snug">
+                  A Little Help Can Change Someone's Life
                 </h1>
-                <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#78665E] mt-2 leading-relaxed">
                   Your donation ensures that children stay in school with books and study supplies, and poor families receive essential meals and social support.
                 </p>
               </div>
 
               {/* Bank Account Summary */}
-              <div className="bg-white rounded-2xl p-5 border border-slate-200/90 shadow-2xs space-y-3 text-xs">
-                <div className="flex items-center gap-2 font-bold text-[#102C63]">
-                  <Landmark className="w-4 h-4 text-[#183F91]" />
+              <div className="bg-white rounded-xl p-5 border border-[#EFE4DC] shadow-xs space-y-3 text-xs">
+                <div className="flex items-center gap-2 font-medium text-[#49352D]">
+                  <Landmark className="w-4 h-4 text-[#C87552]" />
                   <span>Official Bank Account (NEFT / RTGS / IMPS)</span>
                 </div>
-                <div className="space-y-2 font-mono text-slate-600 pt-1">
+                <div className="space-y-2 font-mono text-[#49352D] pt-1">
                   <div className="flex justify-between">
-                    <span className="font-sans text-slate-400">Bank:</span>
-                    <span className="font-bold text-slate-800">{bankName}</span>
+                    <span className="font-sans text-[#78665E]">Bank:</span>
+                    <span className="font-semibold">{bankName}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="font-sans text-slate-400">A/C Number:</span>
+                    <span className="font-sans text-[#78665E]">A/C Number:</span>
                     <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-slate-800">{bankAccount}</span>
-                      <button onClick={() => handleCopy(bankAccount, 'acct')} className="text-[#183F91] hover:underline font-sans font-semibold">
+                      <span className="font-semibold">{bankAccount}</span>
+                      <button onClick={() => handleCopy(bankAccount, 'acct')} className="text-[#C87552] hover:underline font-sans font-medium">
                         {copiedField === 'acct' ? 'Copied' : 'Copy'}
                       </button>
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="font-sans text-slate-400">IFSC Code:</span>
+                    <span className="font-sans text-[#78665E]">IFSC Code:</span>
                     <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-slate-800">{bankIfsc}</span>
-                      <button onClick={() => handleCopy(bankIfsc, 'ifsc')} className="text-[#183F91] hover:underline font-sans font-semibold">
+                      <span className="font-semibold">{bankIfsc}</span>
+                      <button onClick={() => handleCopy(bankIfsc, 'ifsc')} className="text-[#C87552] hover:underline font-sans font-medium">
                         {copiedField === 'ifsc' ? 'Copied' : 'Copy'}
                       </button>
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="font-sans text-slate-400">UPI ID:</span>
+                    <span className="font-sans text-[#78665E]">UPI ID:</span>
                     <div className="flex items-center gap-1.5">
-                      <span className="font-bold text-amber-700">{upiId}</span>
-                      <button onClick={() => handleCopy(upiId, 'upi')} className="text-[#183F91] hover:underline font-sans font-semibold">
+                      <span className="font-semibold text-[#C87552]">{upiId}</span>
+                      <button onClick={() => handleCopy(upiId, 'upi')} className="text-[#C87552] hover:underline font-sans font-medium">
                         {copiedField === 'upi' ? 'Copied' : 'Copy'}
                       </button>
                     </div>
@@ -262,46 +270,51 @@ export default function DonatePageClient({ settings, campaigns }: DonatePageClie
               </div>
 
               {/* Trust Badge */}
-              <div className="flex items-center gap-2 text-xs text-slate-500 pt-1">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <div className="flex items-center gap-2 text-xs text-[#78665E] pt-1">
+                <ShieldCheck className="w-4 h-4 text-[#78866B] flex-shrink-0" />
                 <span>Registered Trust under Indian Trusts Act 1882 • Section 80G Certified</span>
               </div>
             </div>
 
             {/* Right Column: One-Page Fast Donation Form */}
-            <div className="lg:col-span-7 bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200">
-              <form onSubmit={handleDonationSubmit} className="space-y-5">
+            <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 shadow-xs border border-[#EFE4DC]">
+              <form onSubmit={handleDonationSubmit} className="space-y-6">
                 {/* 1. Quick Amount Selection */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-2">
-                    Step 1: Select Contribution Amount
+                  <label className="block text-xs font-medium text-[#78665E] mb-2">
+                    Step 1: Select contribution amount
                   </label>
-                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-                    {quickAmounts.map((amt) => {
-                      const isSelected = selectedTier === amt && !customAmount;
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                    {quickAmounts.map((item) => {
+                      const isSelected = selectedTier === item.val && !customAmount;
                       return (
                         <button
-                          key={amt}
+                          key={item.val}
                           type="button"
                           onClick={() => {
-                            setSelectedTier(amt);
+                            setSelectedTier(item.val);
                             setCustomAmount('');
                           }}
-                          className={`py-2 px-1 rounded-xl text-center text-xs font-bold transition ${
+                          className={`p-3 rounded-xl text-left border transition-colors ${
                             isSelected
-                              ? 'bg-[#183F91] text-white shadow-xs ring-2 ring-[#183F91]/20'
-                              : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
+                              ? 'bg-[#F4D6C6]/40 border-[#C87552]'
+                              : 'bg-[#FFF8F0]/30 border-[#EFE4DC] hover:border-[#F4D6C6]'
                           }`}
                         >
-                          ₹{amt.toLocaleString('en-IN')}
+                          <span className={`block text-base font-serif font-bold tabular-nums ${isSelected ? 'text-[#C87552]' : 'text-[#49352D]'}`}>
+                            {item.label}
+                          </span>
+                          <span className="text-[11px] text-[#78665E] block leading-tight mt-0.5">
+                            {item.note}
+                          </span>
                         </button>
                       );
                     })}
                   </div>
 
                   {/* Custom Amount */}
-                  <div className="mt-2.5 relative">
-                    <span className="absolute left-3 top-2.5 text-xs font-bold text-slate-400">₹</span>
+                  <div className="mt-3 relative">
+                    <span className="absolute left-3.5 top-2.5 text-xs font-semibold text-[#78665E]">₹</span>
                     <input
                       type="number"
                       min="10"
@@ -311,26 +324,28 @@ export default function DonatePageClient({ settings, campaigns }: DonatePageClie
                         setCustomAmount(e.target.value);
                         if (e.target.value) setSelectedTier(0);
                       }}
-                      className="w-full pl-7 pr-4 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                      className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-xs sm:text-sm font-medium text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden"
                     />
                   </div>
                 </div>
 
                 {/* 2. Campaign Selection */}
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">
-                    Direct Contribution Toward:
+                  <label className="block text-xs font-medium text-[#78665E] mb-1.5">
+                    Direct contribution toward:
                   </label>
                   <select
                     value={selectedCampaign}
                     onChange={(e) => setSelectedCampaign(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none bg-white font-medium"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-xs sm:text-sm focus:border-[#C87552] focus:bg-white focus:outline-hidden font-medium text-[#49352D]"
                   >
                     <option value="Wherever Most Needed">Wherever Most Needed</option>
-                    <option value="Children's Education">Children's Education</option>
+                    <option value="Child Education">Child Education (Free Schooling & Books)</option>
                     <option value="Food Distribution & Hunger Relief">Food Distribution &amp; Hunger Relief</option>
                     <option value="Free School Stationery">Free School Stationery</option>
-                    <option value="General Social Welfare">General Social Welfare</option>
+                    <option value="Helping Poor Families">Helping Poor Families</option>
+                    <option value="Healthcare Support">Healthcare Support</option>
+                    <option value="Women Empowerment">Women Empowerment</option>
                     {campaigns.map((c) => (
                       <option key={c.id} value={c.title}>
                         {c.title}
@@ -340,118 +355,127 @@ export default function DonatePageClient({ settings, campaigns }: DonatePageClie
                 </div>
 
                 {/* 3. Minimal Donor Details */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 border-t border-[#EFE4DC] pt-4">
                   <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Full Name <span className="text-red-500">*</span>
+                    <label className="block text-xs font-medium text-[#49352D] mb-1">
+                      Full Name *
                     </label>
                     <input
                       type="text"
                       required
+                      placeholder="e.g. Ramesh Kumar"
                       value={formData.donor_name}
                       onChange={(e) => setFormData({ ...formData, donor_name: e.target.value })}
-                      placeholder="e.g. Meera Kapur"
-                      className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                      className="w-full px-3.5 py-2 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-xs sm:text-sm text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Mobile Number <span className="text-red-500">*</span>
+                    <label className="block text-xs font-medium text-[#49352D] mb-1">
+                      Mobile Number *
                     </label>
                     <input
                       type="tel"
                       required
+                      placeholder="10-digit mobile"
                       value={formData.donor_phone}
                       onChange={(e) => setFormData({ ...formData, donor_phone: e.target.value })}
-                      placeholder="e.g. 9876543210"
-                      className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                      className="w-full px-3.5 py-2 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-xs sm:text-sm text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden"
                     />
                   </div>
-                </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      Email Address <span className="text-slate-400 font-normal">(Optional)</span>
+                    <label className="block text-xs font-medium text-[#49352D] mb-1">
+                      Email Address <span className="text-[#78665E] font-normal">(Optional)</span>
                     </label>
                     <input
                       type="email"
+                      placeholder="name@example.com"
                       value={formData.donor_email}
                       onChange={(e) => setFormData({ ...formData, donor_email: e.target.value })}
-                      placeholder="e.g. meera@example.org"
-                      className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none"
+                      className="w-full px-3.5 py-2 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-xs sm:text-sm text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-slate-700 mb-1">
-                      PAN Card Number <span className="text-slate-400 font-normal">(Optional, for 80G Tax Exemption)</span>
+                    <label className="block text-xs font-medium text-[#49352D] mb-1">
+                      PAN Number <span className="text-[#78665E] font-normal">(Optional, for 80G)</span>
                     </label>
                     <input
                       type="text"
                       maxLength={10}
+                      placeholder="ABCDE1234F"
                       value={formData.pan_number}
                       onChange={(e) => setFormData({ ...formData, pan_number: e.target.value.toUpperCase() })}
-                      placeholder="e.g. ABCDE1234F"
-                      className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs sm:text-sm focus:ring-1 focus:ring-[#183F91] focus:outline-none uppercase"
+                      className="w-full px-3.5 py-2 rounded-xl border border-[#EFE4DC] bg-[#FFF8F0]/30 text-xs sm:text-sm uppercase text-[#49352D] focus:border-[#C87552] focus:bg-white focus:outline-hidden font-mono"
                     />
                   </div>
                 </div>
 
-                {/* 4. Payment Method Options */}
-                <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                    Select Contribution Channel:
+                {/* 4. Payment Mode Buttons */}
+                <div className="border-t border-[#EFE4DC] pt-4">
+                  <label className="block text-xs font-medium text-[#78665E] mb-2">
+                    Select payment method
                   </label>
-                  <div className="grid grid-cols-3 gap-2.5">
-                    {[
-                      { id: 'UPI (Mobile / QR)', label: 'UPI / QR', icon: <QrCode className="w-4 h-4" /> },
-                      { id: 'Online Gateway (Cards/NetBanking)', label: 'Card / NetBank', icon: <CreditCard className="w-4 h-4" /> },
-                      { id: 'Bank Transfer (NEFT/IMPS)', label: 'Bank Transfer', icon: <Landmark className="w-4 h-4" /> }
-                    ].map((m) => (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {['UPI (Mobile / QR)', 'Credit/Debit Card / NetBanking', 'Direct Bank Transfer (NEFT)'].map((mode) => (
                       <button
-                        key={m.id}
+                        key={mode}
                         type="button"
-                        onClick={() => setPaymentMode(m.id)}
-                        className={`p-2.5 rounded-xl border text-center transition flex flex-col items-center gap-1 text-xs font-bold ${
-                          paymentMode === m.id
-                            ? 'bg-[#183F91] text-white border-[#183F91] shadow-xs'
-                            : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                        onClick={() => setPaymentMode(mode)}
+                        className={`p-2.5 rounded-xl border text-center text-xs font-medium transition-colors ${
+                          paymentMode === mode
+                            ? 'bg-[#C87552] text-white border-[#C87552]'
+                            : 'bg-[#FFF8F0] text-[#49352D] border-[#EFE4DC] hover:border-[#F4D6C6]'
                         }`}
                       >
-                        {m.icon}
-                        <span>{m.label}</span>
+                        {mode.includes('UPI') ? 'UPI / QR' : mode.includes('Card') ? 'Cards/NetBanking' : 'Bank Transfer'}
                       </button>
                     ))}
                   </div>
+
+                  {/* QR Code preview when UPI selected */}
+                  {paymentMode.includes('UPI') && (
+                    <div className="mt-3.5 p-3.5 bg-[#FFF8F0] rounded-xl border border-[#EFE4DC] flex items-center gap-4">
+                      <div className="relative w-24 h-24 bg-white rounded-xl p-1.5 border border-[#EFE4DC] flex-shrink-0">
+                        <ImageWithFallback
+                          src={qrCode}
+                          fallbackSrc="/images/placeholder-general.svg"
+                          alt="VN Vidhyapeeth UPI QR Code"
+                          fill
+                          className="object-contain p-1"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-xs font-semibold text-[#49352D] block">Scan &amp; pay directly</span>
+                        <p className="text-[11px] text-[#78665E]">
+                          Scan using GPay, PhonePe, Paytm, or BHIM. UPI ID: <strong className="text-[#C87552]">{upiId}</strong>
+                        </p>
+                        <a
+                          href={upiDeepLink}
+                          className="inline-flex items-center gap-1.5 text-xs text-[#78665E] hover:text-[#C87552] font-medium underline pt-0.5"
+                        >
+                          <Smartphone className="w-3.5 h-3.5 text-[#C87552]" />
+                          <span>Open in Mobile UPI App</span>
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* Mobile UPI Intent Button */}
-                {paymentMode.includes('UPI') && (
-                  <div className="p-3 bg-blue-50/60 rounded-xl border border-blue-100 space-y-2">
-                    <a
-                      href={upiDeepLink}
-                      className="w-full inline-flex items-center justify-center gap-2 bg-[#183F91] hover:bg-[#102C63] text-white py-2.5 px-4 rounded-xl text-xs font-bold transition shadow-xs"
-                    >
-                      <Smartphone className="w-4 h-4" />
-                      <span>Open Any UPI App (GPay / PhonePe / Paytm)</span>
-                    </a>
-                    <p className="text-[11px] text-slate-500 text-center">
-                      Or scan the official QR code using your phone's UPI camera
-                    </p>
-                  </div>
-                )}
-
-                {/* Submit CTA */}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full inline-flex items-center justify-center gap-2 bg-[#D52D2D] hover:bg-[#b82424] text-white py-3.5 rounded-xl font-bold text-sm sm:text-base transition shadow-md disabled:opacity-50"
-                >
-                  <Heart className="w-4 h-4 fill-white" />
-                  <span>{loading ? 'Processing...' : `Donate ₹${amount.toLocaleString('en-IN')} Now`}</span>
-                </button>
+                {/* Submit Action */}
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full inline-flex items-center justify-center gap-2 bg-[#C87552] hover:bg-[#B56140] text-white py-3 rounded-xl font-medium text-sm shadow-xs transition-colors active:scale-[0.99] disabled:opacity-50"
+                  >
+                    <Heart className="w-4 h-4 fill-white" />
+                    <span>
+                      {loading ? 'Processing donation...' : `Donate ₹${amount.toLocaleString('en-IN')} now`}
+                    </span>
+                  </button>
+                </div>
               </form>
             </div>
           </div>

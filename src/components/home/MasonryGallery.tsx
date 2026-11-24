@@ -39,19 +39,19 @@ export default function MasonryGallery({ items, showViewAll = true }: MasonryGal
   const activeMedia = lightboxIndex !== null ? filteredItems[lightboxIndex] : null;
 
   return (
-    <section className="py-20 sm:py-28 bg-[#F8F9FA]" id="gallery" aria-label="Field Activity Gallery">
+    <section className="py-20 sm:py-28 bg-[#FFF8F0]" id="gallery" aria-label="Field Activity Gallery">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 sm:mb-12 gap-4">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 text-[#D52D2D] text-xs font-semibold uppercase tracking-wider mb-3">
-              <span className="w-2 h-2 rounded-full bg-[#D52D2D]" />
-              <span>Field Activity</span>
+            <div className="inline-flex items-center gap-1.5 text-xs font-medium text-[#C87552] mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C87552]" />
+              <span>Field activity</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl font-bold text-[#102C63] tracking-tight">
+            <h2 className="text-3xl sm:text-4xl font-semibold text-[#49352D] tracking-tight">
               Moments from the Ground
             </h2>
-            <p className="mt-3 text-base sm:text-lg text-slate-600 leading-relaxed font-normal">
+            <p className="mt-2.5 text-base text-[#78665E] leading-relaxed">
               Authentic photographs from our community learning sessions, hunger relief drives, and stationery distribution events.
             </p>
           </div>
@@ -59,7 +59,7 @@ export default function MasonryGallery({ items, showViewAll = true }: MasonryGal
           {showViewAll && (
             <Link
               href="/gallery"
-              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[#183F91] hover:text-[#D52D2D] transition-colors whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-medium text-[#C87552] hover:text-[#B56140] transition-colors whitespace-nowrap"
             >
               <span>View full gallery</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -68,15 +68,15 @@ export default function MasonryGallery({ items, showViewAll = true }: MasonryGal
         </div>
 
         {/* Clean Category Filters */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-8 scrollbar-none">
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-8 scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition capitalize flex-shrink-0 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize flex-shrink-0 ${
                 selectedCategory === cat
-                  ? 'bg-[#183F91] text-white shadow-xs'
-                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+                  ? 'bg-[#C87552] text-white shadow-xs'
+                  : 'bg-white text-[#49352D] border border-[#EFE4DC] hover:bg-[#F4D6C6]/30'
               }`}
             >
               {cat === 'all' ? 'All Activities' : cat}
@@ -90,7 +90,7 @@ export default function MasonryGallery({ items, showViewAll = true }: MasonryGal
             <div
               key={item.id}
               onClick={() => openLightbox(index)}
-              className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-slate-100 cursor-pointer border border-slate-200/80 shadow-2xs hover:shadow-md transition-shadow"
+              className="group relative aspect-[4/3] rounded-xl overflow-hidden bg-white cursor-pointer border border-[#EFE4DC] shadow-xs"
             >
               <ImageWithFallback
                 src={item.url}
@@ -98,13 +98,13 @@ export default function MasonryGallery({ items, showViewAll = true }: MasonryGal
                 alt={item.title}
                 fill
                 sizes="(max-width: 640px) 50vw, 25vw"
-                className="object-cover group-hover:scale-102 transition-transform duration-300"
+                className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-3 text-white">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-amber-300">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex flex-col justify-end p-3 text-white">
+                <span className="text-[10px] font-medium text-[#F4D6C6]">
                   {item.category}
                 </span>
-                <h4 className="font-semibold text-xs leading-snug line-clamp-1">
+                <h4 className="font-medium text-xs leading-snug line-clamp-1">
                   {item.title}
                 </h4>
               </div>

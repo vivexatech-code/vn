@@ -2,16 +2,26 @@
 
 @layer base {
   :root {
-    --primary: #183F91;
-    --primary-dark: #102C63;
-    --primary-light: #2A56B8;
-    --accent: #D52D2D;
-    --accent-dark: #B52222;
-    --accent-light: #FF4D4D;
-    --soft-bg: #F5F7FC;
-    --text-main: #1D2939;
-    --text-muted: #667085;
-    --card-border: #E4E7EC;
+    /* Warm, Emotional, Human Palette */
+    --primary: #C87552; /* Terracotta */
+    --primary-hover: #B56140;
+    --primary-dark: #A45032;
+    --primary-light: #F4D6C6; /* Soft Peach */
+
+    --secondary: #49352D; /* Deep Brown */
+    --secondary-dark: #382822;
+    --secondary-light: #5C463D;
+
+    --accent: #78866B; /* Muted Green */
+    --accent-hover: #657358;
+    --accent-light: #EBF0E6;
+
+    --bg-cream: #FFF8F0; /* Warm Cream */
+    --bg-peach: #F4D6C6; /* Soft Peach */
+    --text-deep: #49352D; /* Deep Brown text */
+    --text-muted: #78665E; /* Warm Muted Brown */
+    --card-border: #EFE4DC; /* Delicate warm border */
+    --white: #FFFFFF;
   }
 
   html {
@@ -20,56 +30,117 @@
   }
 
   body {
-    color: var(--text-main);
-    background-color: #FFFFFF;
+    color: var(--text-deep);
+    background-color: #FFF8F0;
     overflow-x: hidden;
   }
 }
 
-/* Custom Utilities for Brand Identity */
+/* Warm Human Color Palette Utilities */
+.bg-cream {
+  background-color: #FFF8F0;
+}
+
+.bg-peach {
+  background-color: #F4D6C6;
+}
+
+.bg-terracotta {
+  background-color: #C87552;
+}
+
+.bg-terracotta-hover:hover {
+  background-color: #B56140;
+}
+
+.bg-deep-brown {
+  background-color: #49352D;
+}
+
+.bg-deep-brown-dark {
+  background-color: #382822;
+}
+
+.bg-muted-green {
+  background-color: #78866B;
+}
+
+.bg-muted-green-light {
+  background-color: #EBF0E6;
+}
+
+.text-deep-brown {
+  color: #49352D;
+}
+
+.text-terracotta {
+  color: #C87552;
+}
+
+.text-muted-green {
+  color: #78866B;
+}
+
+.text-warm-muted {
+  color: #78665E;
+}
+
+.border-peach {
+  border-color: #F4D6C6;
+}
+
+.border-terracotta {
+  border-color: #C87552;
+}
+
+.border-warm-soft {
+  border-color: #EFE4DC;
+}
+
+/* Backward-compatible brand mappings mapped to warm palette */
 .bg-primary-brand {
-  background-color: #183F91;
+  background-color: #C87552;
 }
 
 .bg-navy-brand {
-  background-color: #102C63;
+  background-color: #49352D;
 }
 
 .bg-accent-brand {
-  background-color: #D52D2D;
+  background-color: #78866B;
 }
 
 .bg-soft {
-  background-color: #F5F7FC;
+  background-color: #FFF8F0;
 }
 
 .text-primary-brand {
-  color: #183F91;
+  color: #C87552;
 }
 
 .text-navy-brand {
-  color: #102C63;
+  color: #49352D;
 }
 
 .text-accent-brand {
-  color: #D52D2D;
+  color: #C87552;
 }
 
 .text-muted-brand {
-  color: #667085;
+  color: #78665E;
 }
 
 .border-brand-primary {
-  border-color: #183F91;
+  border-color: #C87552;
 }
 
 .border-brand-accent {
-  border-color: #D52D2D;
+  border-color: #78866B;
 }
 
-/* Elevation and Card Effects */
+/* Warm Gentle Elevation & Card Effects */
 .shadow-card {
-  box-shadow: 0 4px 20px -2px rgba(16, 44, 99, 0.08), 0 2px 6px -1px rgba(16, 44, 99, 0.04);
+  box-shadow: 0 4px 20px -2px rgba(73, 53, 45, 0.06), 0 2px 6px -1px rgba(73, 53, 45, 0.03);
 }
 
 .shadow-card-hover {
@@ -77,35 +148,35 @@
 }
 
 .shadow-card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px -4px rgba(16, 44, 99, 0.14), 0 4px 10px -2px rgba(16, 44, 99, 0.06);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px -4px rgba(73, 53, 45, 0.10), 0 4px 10px -2px rgba(73, 53, 45, 0.04);
 }
 
-.hero-gradient-overlay {
-  background: linear-gradient(135deg, rgba(16, 44, 99, 0.94) 0%, rgba(24, 63, 145, 0.85) 60%, rgba(16, 44, 99, 0.7) 100%);
+.hero-warm-overlay {
+  background: linear-gradient(135deg, rgba(73, 53, 45, 0.88) 0%, rgba(200, 117, 82, 0.72) 60%, rgba(73, 53, 45, 0.65) 100%);
 }
 
 .subtle-pattern {
-  background-image: radial-gradient(#183F91 0.75px, transparent 0.75px);
+  background-image: radial-gradient(#C87552 0.75px, transparent 0.75px);
   background-size: 24px 24px;
-  background-color: #F5F7FC;
+  background-color: #FFF8F0;
 }
 
-/* Custom Scrollbar */
+/* Custom Warm Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F1F4F9;
+  background: #FFF8F0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #B6C3DC;
+  background: #F4D6C6;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #183F91;
+  background: #C87552;
 }

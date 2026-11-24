@@ -63,16 +63,16 @@ function ContactForm() {
   };
 
   return (
-    <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-card border border-slate-100">
+    <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-[#EFE4DC]">
       {submitted ? (
         <div className="text-center py-12 space-y-4">
-          <div className="w-16 h-16 rounded-full bg-green-100 text-green-700 flex items-center justify-center mx-auto">
+          <div className="w-16 h-16 rounded-full bg-[#78866B]/20 text-[#78866B] flex items-center justify-center mx-auto">
             <CheckCircle2 className="w-8 h-8" />
           </div>
-          <h3 className="font-serif font-black text-2xl text-[#102C63]">
+          <h3 className="font-serif font-black text-2xl text-[#49352D]">
             Enquiry Successfully Submitted!
           </h3>
-          <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+          <p className="text-sm text-[#78665E] max-w-md mx-auto leading-relaxed">
             Thank you for contacting <strong>VN Vidhyapeeth</strong>. Our administrative desk has received your request and will contact you via phone or email within 24 business hours.
           </p>
           <button
@@ -80,7 +80,7 @@ function ContactForm() {
               setSubmitted(false);
               setMessage('');
             }}
-            className="mt-4 inline-block bg-[#183F91] text-white px-6 py-2.5 rounded-full text-xs font-semibold"
+            className="mt-4 inline-block bg-[#C87552] text-white px-6 py-2.5 rounded-full text-xs font-semibold hover:bg-[#B56140] transition"
           >
             Submit Another Message
           </button>
@@ -88,10 +88,10 @@ function ContactForm() {
       ) : (
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <h3 className="font-serif font-black text-2xl text-[#102C63]">
+            <h3 className="font-serif font-black text-2xl text-[#49352D]">
               Send an Official Message
             </h3>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
+            <p className="text-xs sm:text-sm text-[#78665E] mt-1">
               Select inquiry category to route your message to the appropriate department.
             </p>
           </div>
@@ -116,8 +116,8 @@ function ContactForm() {
                 onClick={() => setType(t.id)}
                 className={`py-2 px-3 rounded-xl text-xs font-semibold text-center transition ${
                   type === t.id
-                    ? 'bg-[#183F91] text-white shadow-sm'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-[#C87552] text-white shadow-xs'
+                    : 'bg-[#FFF8F0] text-[#49352D] border border-[#EFE4DC] hover:bg-[#F4D6C6]/40'
                 }`}
               >
                 {t.label}
@@ -127,7 +127,7 @@ function ContactForm() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[#49352D] mb-1">
                 Full Name *
               </label>
               <input
@@ -136,12 +136,12 @@ function ContactForm() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Rajesh Sharma"
-                className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#183F91]/20 focus:border-[#183F91]"
+                className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFFDFB] focus:outline-none focus:ring-2 focus:ring-[#C87552]/20 focus:border-[#C87552]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[#49352D] mb-1">
                 Mobile Number *
               </label>
               <input
@@ -150,14 +150,14 @@ function ContactForm() {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+91 98765 43210"
-                className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#183F91]/20 focus:border-[#183F91]"
+                className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFFDFB] focus:outline-none focus:ring-2 focus:ring-[#C87552]/20 focus:border-[#C87552]"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
+              <label className="block text-xs font-semibold text-[#49352D] mb-1">
                 Email Address *
               </label>
               <input
@@ -166,26 +166,26 @@ function ContactForm() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@domain.com"
-                className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#183F91]/20 focus:border-[#183F91]"
+                className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFFDFB] focus:outline-none focus:ring-2 focus:ring-[#C87552]/20 focus:border-[#C87552]"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Course Interest / Subject (Optional)
+              <label className="block text-xs font-semibold text-[#49352D] mb-1">
+                Program of Interest (Optional)
               </label>
               <input
                 type="text"
                 value={courseInterest}
                 onChange={(e) => setCourseInterest(e.target.value)}
-                placeholder="e.g. DMLT, DPT, ADCA"
-                className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#183F91]/20 focus:border-[#183F91]"
+                placeholder="e.g. Child Education, Food Relief"
+                className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFFDFB] focus:outline-none focus:ring-2 focus:ring-[#C87552]/20 focus:border-[#C87552]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-[#49352D] mb-1">
               Your City / State / District
             </label>
             <input
@@ -193,12 +193,12 @@ function ContactForm() {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="e.g. Sirsa, Haryana"
-              className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#183F91]/20 focus:border-[#183F91]"
+              className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFFDFB] focus:outline-none focus:ring-2 focus:ring-[#C87552]/20 focus:border-[#C87552]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-semibold text-[#49352D] mb-1">
               Detailed Message / Query *
             </label>
             <textarea
@@ -206,22 +206,22 @@ function ContactForm() {
               rows={4}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              placeholder="Describe your enquiry, admission background, or center affiliation details..."
-              className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#183F91]/20 focus:border-[#183F91]"
+              placeholder="Describe your enquiry, volunteer interest, or partnership query..."
+              className="w-full text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-[#EFE4DC] bg-[#FFFDFB] focus:outline-none focus:ring-2 focus:ring-[#C87552]/20 focus:border-[#C87552]"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 bg-[#183F91] hover:bg-[#102C63] text-white py-3.5 rounded-xl font-semibold text-sm shadow-md transition disabled:opacity-70"
+            className="w-full flex items-center justify-center gap-2 bg-[#C87552] hover:bg-[#B56140] text-white py-3.5 rounded-xl font-semibold text-sm shadow-md transition disabled:opacity-70"
           >
             {loading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>Submit Official Enquiry</span>
+                <span>Submit Official Message</span>
               </>
             )}
           </button>
@@ -237,81 +237,81 @@ export default function ContactPage() {
       <PageHeader
         badge="Connect with Us"
         title="Contact VN Vidhyapeeth"
-        subtitle="Reach out to our Head Office or Registered Delhi Office for admissions, center affiliation, or verification."
+        subtitle="Reach out to our Head Office or Registered Delhi Office for donations, volunteering, or social welfare partnerships."
         breadcrumbs={[{ label: 'Contact Us' }]}
       />
 
-      <section className="py-16 sm:py-20 bg-[#F5F7FC]">
+      <section className="py-16 sm:py-20 bg-[#FFF8F0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* Contact Details & Addresses (5 cols) */}
             <div className="lg:col-span-5 space-y-6">
               {/* Head Office Card */}
-              <div className="bg-white p-7 rounded-3xl shadow-sm border border-slate-100 space-y-4">
+              <div className="bg-white p-7 rounded-3xl shadow-xs border border-[#EFE4DC] space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#F4D6C6]/50 text-[#C87552] flex items-center justify-center flex-shrink-0">
                     <Building className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-red-600">Head Office</span>
-                    <h3 className="font-serif font-bold text-lg text-[#102C63]">
-                      Documents Verification & HO
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#C87552]">Head Office</span>
+                    <h3 className="font-serif font-bold text-lg text-[#49352D]">
+                      Administrative Office &amp; Operations
                     </h3>
                   </div>
                 </div>
 
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#78665E] leading-relaxed">
                   Panchmukhi Chowk, Nohar Road, Ellenabad, Sirsa, Haryana – 125102
                 </p>
 
-                <div className="pt-2 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+                <div className="pt-2 border-t border-[#EFE4DC] space-y-2 text-xs text-[#78665E]">
                   <div className="flex items-center gap-2">
-                    <Phone className="w-3.5 h-3.5 text-red-500" />
-                    <span className="font-semibold text-slate-800">+91 7015358183 / +91 8199048325</span>
+                    <Phone className="w-3.5 h-3.5 text-[#C87552]" />
+                    <span className="font-semibold text-[#49352D]">+91 7015358183 / +91 8199048325</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Mail className="w-3.5 h-3.5 text-red-500" />
+                    <Mail className="w-3.5 h-3.5 text-[#C87552]" />
                     <span>vnvidyapeeth@gmail.com</span>
                   </div>
-                  <div className="flex items-center gap-2 text-slate-500">
-                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                  <div className="flex items-center gap-2 text-[#78665E]">
+                    <Clock className="w-3.5 h-3.5 text-[#78665E]" />
                     <span>Mon - Sat: 9:00 AM – 5:00 PM</span>
                   </div>
                 </div>
               </div>
 
               {/* Registered Office Card */}
-              <div className="bg-white p-7 rounded-3xl shadow-sm border border-slate-100 space-y-4">
+              <div className="bg-white p-7 rounded-3xl shadow-xs border border-[#EFE4DC] space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#183F91] flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#C87552]/10 text-[#C87552] flex items-center justify-center flex-shrink-0">
                     <Landmark className="w-5 h-5" />
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#183F91]">Trust Headquarters</span>
-                    <h3 className="font-serif font-bold text-lg text-[#102C63]">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#C87552]">Trust Headquarters</span>
+                    <h3 className="font-serif font-bold text-lg text-[#49352D]">
                       Registered National Office
                     </h3>
                   </div>
                 </div>
 
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#78665E] leading-relaxed">
                   1359 A, Gali Number 8, Govind Puri, New Delhi – 110019, India
                 </p>
 
-                <div className="pt-2 border-t border-slate-100 text-xs text-blue-900 font-medium">
+                <div className="pt-2 border-t border-[#EFE4DC] text-xs text-[#49352D] font-medium">
                   Registered under Indian Trust Act 1882
                 </div>
               </div>
 
-              {/* Bank Fee Deposit Snapshot */}
-              <div className="bg-[#102C63] text-white p-6 rounded-3xl space-y-3">
+              {/* Bank Donation Snapshot */}
+              <div className="bg-[#49352D] text-white p-6 rounded-3xl space-y-3 border border-[#C87552]/30">
                 <h4 className="font-bold text-base text-white">
-                  Student Admission Fee Deposit
+                  Official NGO Bank Account
                 </h4>
-                <p className="text-xs text-blue-200">
-                  Authorized Punjab National Bank account for academic fee payments:
+                <p className="text-xs text-[#F4D6C6]">
+                  Authorized Punjab National Bank account for social welfare contributions:
                 </p>
-                <div className="text-xs text-blue-100 space-y-1 font-mono">
+                <div className="text-xs text-[#FFF8F0]/90 space-y-1 font-mono">
                   <p>Bank: Punjab National Bank</p>
                   <p>A/C: 0442102100000677</p>
                   <p>IFSC: PUNB0044210</p>
